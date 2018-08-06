@@ -9,10 +9,19 @@
 /* Begin PBXBuildFile section */
 		1456F9B6AD00C33B92E85C36 /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 234674EADEBC174194CA1EE6 /* Pods_WeatherApp.framework */; };
 		AB091B342110AA7E007C1782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB091B332110AA7E007C1782 /* AppDelegate.swift */; };
-		AB091B362110AA7E007C1782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB091B352110AA7E007C1782 /* ViewController.swift */; };
+		AB091B362110AA7E007C1782 /* WorldMapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB091B352110AA7E007C1782 /* WorldMapController.swift */; };
 		AB091B3B2110AA80007C1782 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB091B3A2110AA80007C1782 /* Assets.xcassets */; };
 		AB091B3E2110AA80007C1782 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB091B3C2110AA80007C1782 /* LaunchScreen.storyboard */; };
 		AB091B4C2110AD71007C1782 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB091B4B2110AD71007C1782 /* MapKit.framework */; };
+		AB4ABDDD21122EBD003E4302 /* WeatherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDDC21122EBD003E4302 /* WeatherDetailView.swift */; };
+		AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDDE21122ED0003E4302 /* WorldMapView.swift */; };
+		AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE021122F11003E4302 /* DescriptionLocationView.swift */; };
+		AB4ABDE321122F3E003E4302 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE221122F3E003E4302 /* LocationModel.swift */; };
+		AB4ABDE521122F72003E4302 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE421122F72003E4302 /* WeatherModel.swift */; };
+		AB4ABDE721122FB2003E4302 /* WeatherDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE621122FB2003E4302 /* WeatherDetailController.swift */; };
+		AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE821122FCD003E4302 /* UIColor+AppColor.swift */; };
+		AB4ABDEB21123008003E4302 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDEA21123008003E4302 /* Constants.swift */; };
+		AB4ABDEE2117177C003E4302 /* Float+CleanValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDED2117177C003E4302 /* Float+CleanValue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,11 +30,20 @@
 		85F5EAA6246DF4CECBBD5119 /* Pods-WeatherApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeatherApp/Pods-WeatherApp.debug.xcconfig"; sourceTree = "<group>"; };
 		AB091B302110AA7D007C1782 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB091B332110AA7E007C1782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AB091B352110AA7E007C1782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AB091B352110AA7E007C1782 /* WorldMapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldMapController.swift; sourceTree = "<group>"; };
 		AB091B3A2110AA80007C1782 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB091B3D2110AA80007C1782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB091B3F2110AA80007C1782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB091B4B2110AD71007C1782 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		AB4ABDDC21122EBD003E4302 /* WeatherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailView.swift; sourceTree = "<group>"; };
+		AB4ABDDE21122ED0003E4302 /* WorldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldMapView.swift; sourceTree = "<group>"; };
+		AB4ABDE021122F11003E4302 /* DescriptionLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionLocationView.swift; sourceTree = "<group>"; };
+		AB4ABDE221122F3E003E4302 /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
+		AB4ABDE421122F72003E4302 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		AB4ABDE621122FB2003E4302 /* WeatherDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailController.swift; sourceTree = "<group>"; };
+		AB4ABDE821122FCD003E4302 /* UIColor+AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+AppColor.swift"; sourceTree = "<group>"; };
+		AB4ABDEA21123008003E4302 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AB4ABDED2117177C003E4302 /* Float+CleanValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Float+CleanValue.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +89,7 @@
 		AB091B322110AA7E007C1782 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				AB4ABDEC21123026003E4302 /* Service */,
 				AB091B492110AAC7007C1782 /* Helpers */,
 				AB091B482110AAB1007C1782 /* Extensions */,
 				AB091B472110AA95007C1782 /* Controllers */,
@@ -87,6 +106,8 @@
 		AB091B452110AA89007C1782 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AB4ABDE221122F3E003E4302 /* LocationModel.swift */,
+				AB4ABDE421122F72003E4302 /* WeatherModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -94,6 +115,9 @@
 		AB091B462110AA8F007C1782 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AB4ABDDC21122EBD003E4302 /* WeatherDetailView.swift */,
+				AB4ABDDE21122ED0003E4302 /* WorldMapView.swift */,
+				AB4ABDE021122F11003E4302 /* DescriptionLocationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -101,7 +125,8 @@
 		AB091B472110AA95007C1782 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				AB091B352110AA7E007C1782 /* ViewController.swift */,
+				AB091B352110AA7E007C1782 /* WorldMapController.swift */,
+				AB4ABDE621122FB2003E4302 /* WeatherDetailController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -109,6 +134,8 @@
 		AB091B482110AAB1007C1782 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				AB4ABDE821122FCD003E4302 /* UIColor+AppColor.swift */,
+				AB4ABDED2117177C003E4302 /* Float+CleanValue.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -116,6 +143,7 @@
 		AB091B492110AAC7007C1782 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				AB4ABDEA21123008003E4302 /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -127,6 +155,13 @@
 				234674EADEBC174194CA1EE6 /* Pods_WeatherApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AB4ABDEC21123026003E4302 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,6 +241,8 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherApp/Pods-WeatherApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
+				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/LBTAComponents/LBTAComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -214,6 +251,8 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBTAComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -262,8 +301,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB091B362110AA7E007C1782 /* ViewController.swift in Sources */,
+				AB4ABDDD21122EBD003E4302 /* WeatherDetailView.swift in Sources */,
+				AB091B362110AA7E007C1782 /* WorldMapController.swift in Sources */,
+				AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */,
+				AB4ABDE521122F72003E4302 /* WeatherModel.swift in Sources */,
+				AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */,
+				AB4ABDEB21123008003E4302 /* Constants.swift in Sources */,
+				AB4ABDE321122F3E003E4302 /* LocationModel.swift in Sources */,
+				AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */,
 				AB091B342110AA7E007C1782 /* AppDelegate.swift in Sources */,
+				AB4ABDEE2117177C003E4302 /* Float+CleanValue.swift in Sources */,
+				AB4ABDE721122FB2003E4302 /* WeatherDetailController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

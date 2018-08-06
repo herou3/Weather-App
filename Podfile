@@ -10,5 +10,6 @@ target 'WeatherApp' do
   pod 'LBTAComponents', '~> 0.1.9'
   pod 'TRON', '~> 4.0'
   pod 'SnapKit', '~> 4.0.0'
+  pod "KRProgressHUD"
 
 end
