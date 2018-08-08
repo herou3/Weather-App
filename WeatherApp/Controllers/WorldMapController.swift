@@ -10,7 +10,7 @@ import MapKit
 import SnapKit
 import KRProgressHUD
 
-class WorldMapController: UIViewController {
+class WorldMapController: UINavigationController {
     
     // MARK: - Property
     private let mapView = WorldMapView()
@@ -88,10 +88,10 @@ class WorldMapController: UIViewController {
         self.descriptionLocationView.snp.updateConstraints { (make) in
             make.bottom.equalTo(mapView).offset(100)
         }
-        self.descriptionLocationView.isHidden = true
         UIView.animate(withDuration: 0.5) {
             self.mapView.layoutIfNeeded()
         }
+        self.descriptionLocationView.isHidden = true
     }
     
     private func showDescriptinLocationView() {
@@ -102,6 +102,9 @@ class WorldMapController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.mapView.layoutIfNeeded()
         }
+        descriptionLocationView.detailWeatherButton.addTarget(self,
+                                                              action: #selector(pushDetailViewContorller),
+                                                              for: .touchUpInside)
     }
     
     // MARK: - Add point in Map
@@ -117,7 +120,7 @@ class WorldMapController: UIViewController {
         mapView.showAnnotations(pointAnotations, animated: true)
     }
     
-    // MARK: - Segue
+    // MARK: - Gestures
     @objc func addPlacemarkAfterTouchToScreen(sender: UITapGestureRecognizer) {
         let location = sender.location(in: mapView)
         let locationCoord = self.mapView.convert(location, toCoordinateFrom: mapView)
@@ -131,38 +134,29 @@ class WorldMapController: UIViewController {
         
         clearMapAnotations()
         placemarks.removeAll()
-    
-        geocoder.reverseGeocodeLocation(locationForPlacemark) { (placemarks, error) in
-            if error != nil {
-                print(error?.localizedDescription ?? "def error")
-            }
-            guard let placem = placemarks as? [CLPlacemark] else { return }
-            
-            if placem.count > 0 {
-                let placemark = placemarks![0]
-                
-                self.placemarks.insert(placemark, at: 0)
-                if placemarks?.first?.locality != nil {
-                    self.isFindedLocality = true
-                    guard let locality = placemark.locality else { return }
-                    guard let latitude = placemark.location?.coordinate.latitude else { return }
-                    guard let longitude = placemark.location?.coordinate.longitude else { return }
-                    let coordinateString = String("lat:\(Float(latitude).cleanValue) long:\(Float(longitude).cleanValue)")
-                    self.descriptionLocationView.configureDescriptionLocationView(cityName: locality,
-                                                                                  pointCoordinate: coordinateString)
-                } else {
-                    self.hideDescriptinLocationView()
-                }
-            }
-        }
+
+        self.checkInformationAboutPlacemark(location: locationForPlacemark)
     }
     
+    // MARK: - Internal function
     private func clearMapAnotations() {
         self.mapView.removeAnnotations(mapView.annotations)
     }
     
-    func checkInformationAboutPlacemark(placemarks: [CLPlacemark]) {
-        if let placemark = placemarks.first {
+    private func checkInformationAboutPlacemark(location: CLLocation) {
+        KRProgressHUD.show()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if error != nil {
+                print(error?.localizedDescription ?? "def error")
+            }
+            guard (placemarks as? [CLPlacemark]) != nil else {
+                if error != nil {
+                    print(error?.localizedDescription ?? "unknown error")
+                    KRProgressHUD.showError()
+                }
+                return
+            }
+            if let placemark = placemarks?.first {
             self.placemarks.insert(placemark, at: 0)
             if placemark.locality != nil && placemark.location?.coordinate != nil {
                 self.isFindedLocality = true
@@ -174,8 +168,17 @@ class WorldMapController: UIViewController {
                                                                                pointCoordinate: coordinateString)
             } else {
                 self.isFindedLocality = false
+                }
             }
+            KRProgressHUD.dismiss()
         }
+    }
+    
+    // MARK: - Present WeatherDetailController
+    @objc func pushDetailViewContorller() {
+        let weatherDetailController = WeatherDetailController()
+        let navController = UINavigationController(rootViewController: weatherDetailController)
+        self.present(navController, animated: true, completion: nil)
     }
 }
 
@@ -196,17 +199,7 @@ extension WorldMapController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
-                guard let placemarks = placemarks else {
-                    if error != nil {
-                        print(error?.localizedDescription ?? "def error")
-                        KRProgressHUD.showError()
-                    }
-                    return
-                }
-                KRProgressHUD.dismiss()
-                self?.checkInformationAboutPlacemark(placemarks: placemarks)
-            }
+            self.checkInformationAboutPlacemark(location: location)
         }
     }
     

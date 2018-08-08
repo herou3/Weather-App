@@ -19,7 +19,7 @@ extension UIColor {
         return color(196, 30, 58)
     }
     
-    class var сarmine: UIColor {
+    class var carmine: UIColor {
         return color(150, 0, 24)
     }
     

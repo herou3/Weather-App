@@ -25,7 +25,7 @@ class DescriptionLocationView: UIView {
     private let nameCityLabel: UILabel = {
         var cityLabel: UILabel = UILabel()
         cityLabel.translatesAutoresizingMaskIntoConstraints = false
-        cityLabel.textColor = UIColor.сarmine
+        cityLabel.textColor = UIColor.carmine
         cityLabel.font = UIFont.systemFont(ofSize: 20)
         return cityLabel
     }()
@@ -33,13 +33,13 @@ class DescriptionLocationView: UIView {
     private let coordinateLabel: UILabel = {
         var coordLabel: UILabel = UILabel()
         coordLabel.translatesAutoresizingMaskIntoConstraints = false
-        coordLabel.textColor = UIColor.сarmine
+        coordLabel.textColor = UIColor.carmine
         coordLabel.font = UIFont.systemFont(ofSize: 14)
         coordLabel.numberOfLines = 2
         return coordLabel
     }()
     
-    private let detailWeatherButton: UIButton = {
+    public let detailWeatherButton: UIButton = {
         var detailWeatherButton: UIButton = UIButton()
         detailWeatherButton.translatesAutoresizingMaskIntoConstraints = false
         detailWeatherButton.setTitleColor(UIColor.cardinal, for: .normal)

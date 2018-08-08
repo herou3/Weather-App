@@ -6,4 +6,78 @@
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import Foundation
+import SnapKit
+import KRProgressHUD
+import LBTAComponents
+
+class WeatherDetailView: UIView {
+    
+    // MARK: - Init WeatherDetailView
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Create UI elements
+    private let weatherDescriptionImageView: CachedImageView = {
+        var imageView: CachedImageView = CachedImageView()
+        imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private let degreesWeatherLabel: UILabel = {
+        var degreesLabel: UILabel = UILabel()
+        degreesLabel.translatesAutoresizingMaskIntoConstraints = false
+        degreesLabel.textColor = UIColor.carmine
+        degreesLabel.font = UIFont.systemFont(ofSize: 24)
+        return degreesLabel
+    }()
+
+    // MARK: - Configurate WeatherDetailView
+    
+    private  func addWeatherDescriptionImageView() {
+        addSubview(weatherDescriptionImageView)
+        weatherDescriptionImageView.snp.makeConstraints { (make) in
+            make.top.left.equalTo(self).offset(16)
+            make.left.equalTo(self).offset(16)
+            make.height.equalTo(100)
+            make.width.equalTo(100)
+        }
+    }
+    
+    private func addDegreesWeatherLabel() {
+        addSubview(degreesWeatherLabel)
+        degreesWeatherLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(weatherDescriptionImageView.snp.top).offset(24)
+            make.left.equalTo(weatherDescriptionImageView.snp.right).offset(8)
+            make.right.equalTo(self).offset(-16)
+        }
+    }
+    
+    private func setupViews() {
+        self.backgroundColor = UIColor.mainColor
+        addWeatherDescriptionImageView()
+        addDegreesWeatherLabel()
+    }
+    
+    // MARK: - Configurate data for DescriptionLocationView
+}
+
+extension WeatherDetailView {
+    func configurateDataForDescriptionLocationView(weatherImage: UIImage?,
+                                                   weatherDegree: String?) {
+        if weatherDegree != "" ||
+            weatherDegree != nil {
+            degreesWeatherLabel.text = weatherDegree
+        } else {
+            degreesWeatherLabel.text = weatherDegree
+        }
+    }
+}

@@ -16,8 +16,6 @@
 		AB4ABDDD21122EBD003E4302 /* WeatherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDDC21122EBD003E4302 /* WeatherDetailView.swift */; };
 		AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDDE21122ED0003E4302 /* WorldMapView.swift */; };
 		AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE021122F11003E4302 /* DescriptionLocationView.swift */; };
-		AB4ABDE321122F3E003E4302 /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE221122F3E003E4302 /* LocationModel.swift */; };
-		AB4ABDE521122F72003E4302 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE421122F72003E4302 /* WeatherModel.swift */; };
 		AB4ABDE721122FB2003E4302 /* WeatherDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE621122FB2003E4302 /* WeatherDetailController.swift */; };
 		AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDE821122FCD003E4302 /* UIColor+AppColor.swift */; };
 		AB4ABDEB21123008003E4302 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDEA21123008003E4302 /* Constants.swift */; };
@@ -38,8 +36,6 @@
 		AB4ABDDC21122EBD003E4302 /* WeatherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailView.swift; sourceTree = "<group>"; };
 		AB4ABDDE21122ED0003E4302 /* WorldMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldMapView.swift; sourceTree = "<group>"; };
 		AB4ABDE021122F11003E4302 /* DescriptionLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionLocationView.swift; sourceTree = "<group>"; };
-		AB4ABDE221122F3E003E4302 /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
-		AB4ABDE421122F72003E4302 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
 		AB4ABDE621122FB2003E4302 /* WeatherDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailController.swift; sourceTree = "<group>"; };
 		AB4ABDE821122FCD003E4302 /* UIColor+AppColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+AppColor.swift"; sourceTree = "<group>"; };
 		AB4ABDEA21123008003E4302 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -106,8 +102,6 @@
 		AB091B452110AA89007C1782 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AB4ABDE221122F3E003E4302 /* LocationModel.swift */,
-				AB4ABDE421122F72003E4302 /* WeatherModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -304,10 +298,8 @@
 				AB4ABDDD21122EBD003E4302 /* WeatherDetailView.swift in Sources */,
 				AB091B362110AA7E007C1782 /* WorldMapController.swift in Sources */,
 				AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */,
-				AB4ABDE521122F72003E4302 /* WeatherModel.swift in Sources */,
 				AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */,
 				AB4ABDEB21123008003E4302 /* Constants.swift in Sources */,
-				AB4ABDE321122F3E003E4302 /* LocationModel.swift in Sources */,
 				AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */,
 				AB091B342110AA7E007C1782 /* AppDelegate.swift in Sources */,
 				AB4ABDEE2117177C003E4302 /* Float+CleanValue.swift in Sources */,
