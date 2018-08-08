@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  WorldMapController.swift
 //  WeatherApp
 //
 //  Created by Pavel Kurilov on 31.07.2018.
@@ -9,6 +9,7 @@
 import MapKit
 import SnapKit
 import KRProgressHUD
+import TRON
 
 class WorldMapController: UINavigationController {
     
@@ -32,6 +33,7 @@ class WorldMapController: UINavigationController {
             }
         }
     }
+    private var networkService: NetworkService = NetworkService()
     
     // MARK: - Init
     override func viewDidLoad() {
@@ -176,7 +178,7 @@ class WorldMapController: UINavigationController {
     
     // MARK: - Present WeatherDetailController
     @objc func pushDetailViewContorller() {
-        let weatherDetailController = WeatherDetailController()
+        let weatherDetailController = WeatherDetailController(networkService: networkService)
         let navController = UINavigationController(rootViewController: weatherDetailController)
         self.present(navController, animated: true, completion: nil)
     }

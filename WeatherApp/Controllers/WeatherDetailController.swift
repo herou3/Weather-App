@@ -8,6 +8,8 @@
 
 import LBTAComponents
 import SnapKit
+import TRON
+import SwiftyJSON
 
 class WeatherDetailController: UIViewController {
     
@@ -16,10 +18,13 @@ class WeatherDetailController: UIViewController {
     private var weatherTableView: UITableView = UITableView()
     private var weatherDictionary = [String: String]()
     var heightNavBar: CGFloat = 0
+    private var networkService: NetworkService
+    private var weatherByCity: WeatherByCity?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configurateNavigationBar()
+        loadAndRefreshRecipesData()
         self.view.backgroundColor = UIColor.mainColor
         weatherDetailView.configurateDataForDescriptionLocationView(weatherImage: #imageLiteral(resourceName: "defaultWeather-icon"),
                                                                     weatherDegree: "+32")
@@ -30,6 +35,15 @@ class WeatherDetailController: UIViewController {
                                                            target: self,
                                                            action: #selector(cancelWeatherDetailView))
         self.configurateDictonary(valueOne: "test1", valueTwo: nil, valueThree: "test3", valueFour: "", valueFive: "test5")
+    }
+    
+    init(networkService: NetworkService) {
+        self.networkService = networkService
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - configurate WeatherDetailController
@@ -62,6 +76,10 @@ class WeatherDetailController: UIViewController {
     
     @objc private func cancelWeatherDetailView() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func loadAndRefreshRecipesData() {
+        networkService.featchHomeFeed(city: "Rome")
     }
     
     private func configurateNavigationBar() {
