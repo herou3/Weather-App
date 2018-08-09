@@ -7,50 +7,64 @@
 //
 
 import Foundation
-import TRON
-import SwiftyJSON
+import KRProgressHUD
 
-class NetworkService {
-    // MARK: - Propery
-    let tron = TRON(baseURL: Constant.baseUrl)
-    var weatherObj = WeatherByCity()
-    
-    // MARK: - Action
-    func featchHomeFeed(city: String) {
-        _ = URLSession.shared
-        _ = URL(string: "\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)")
-        let request: APIRequest<WeatherResponse, MyError> = tron.req
-        request.method = .post
-        request.parameters = ["APPID": "\(Constant.appId)", "q": "\(city)"]
-        request.perform(withSuccess: { (weatherResponse) in
-            self.weatherObj = weatherResponse.weatherByCity
-        }) { (error) in
-            print(error.response?.statusCode ?? "Status Code Missing")
-            guard let err = error.errorModel else { return }
-            print(err.isEmpty)
-        }
-        }
-        
-//        let session = URLSession.shared
-//        let weatherRequestURL = URL(string: "\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)")
-//        let dataTask = session.dataTask(with: weatherRequestURL!) { (data, response, error) in
-//            if let response = response {
-//                print(response)
-//            }
-//
-//            guard let data = data else { return }
-//            do {
-//                let json = try JSONSerialization.jsonObject(with: data, options: [])
-//                print(json)
-//        } catch {
-//                print(error)
-//            }
-//            }.resume()
-//        }
+public enum NetworkServiceError: Error {
+        case failed
 }
-    
-class JSONError: JSONDecodable {
-    required init(json: JSON) throws {
-        print("JSON Error")
+
+class NetworkServiceFL {
+    // MARK: - Propery
+//    var weatherObj: WeatherByCity?
+//
+    // MARK: - Action
+func featchHomeFeed(at url: URL, completion: (Data, Error) -> Void) {
+        KRProgressHUD.show()
+        let session = URLSession.shared
+//        let weatherRequestURL = URL(string: "\(Constant.baseUrl)?APPIDs=\(Constant.appId)&q=\(city)")
+        session.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                print(error ?? "Error")
+                KRProgressHUD.showError()
+                return
+            }
+            if let response = response {
+                print(response)
+            }
+            guard let data = data else { return }
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                let jsonDecoder = JSONDecoder()
+                let responseModel = try jsonDecoder.decode(WeatherByCity.self, from: data)
+        } catch {
+            print(error)
+            KRProgressHUD.showError()
+            }
+        }.resume()
     }
+    
+    func asyncExample2(with completion: @escaping (() -> Void)) {
+        //The same as the above method - the compiler sees the `@escaping` nature of the
+        //closure required by `anotherThing()` and tells us we need to allow our own completion
+        //closure to be @escaping too.  `anotherThing`'s completion block will be retained in memory until
+        //it is executed, so our completion closure must explicitely do the same.
+        runAsyncTask {
+            completion()
+        }
+    }
+    
+    func runAsyncTask(completion: @escaping (() -> Void)) {
+        DispatchQueue.main.async
+        {
+            completion()
+        }
+    }
+}
+//    public func data(at: URL, completion: (Data?, Error?) -> ()) {
+//
+//    }
+//}
+
+protocol NetworkService {
+    func data(at url: URL, completion: @escaping (Data?, Error?) -> Void)
 }

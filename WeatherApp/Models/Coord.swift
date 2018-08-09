@@ -1,28 +1,22 @@
-//
-//  Coord.swift
-//  WeatherApp
-//
 //  Created by Pavel Kurilov on 08.08.2018.
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import UIKit
-import TRON
-import SwiftyJSON
+import Foundation
+struct Coord: Codable {
+	let lon: Double?
+	let lat: Double?
 
-private struct Keys {
-    static let lon: String = "lon"
-    static let lat: String = "lat"
-}
+	enum CodingKeys: String, CodingKey {
 
-struct Coord {
-    var lat: CGFloat?
-    var lon: CGFloat?
-    
-    init(json: JSON) {
-        self.lat = CGFloat(json[Keys.lat].floatValue)
-        self.lon = CGFloat(json[Keys.lon].floatValue)
-    }
-    
-    init() { }
+		case lon
+		case lat
+	}
+
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		lon = try values.decodeIfPresent(Double.self, forKey: .lon)
+		lat = try values.decodeIfPresent(Double.self, forKey: .lat)
+	}
+
 }

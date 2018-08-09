@@ -1,37 +1,31 @@
-//
-//  Main.swift
-//  WeatherApp
-//
 //  Created by Pavel Kurilov on 08.08.2018.
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import UIKit
-import TRON
-import SwiftyJSON
+import Foundation
+struct Main: Codable {
+	let temp: Double?
+	let pressure: Int?
+	let humidity: Int?
+	let tempMin: Double?
+	let tempMax: Double?
 
-private struct Keys {
-    static let temp: String = "temp"
-    static let pressure: String = "pressure"
-    static let humidity: String = "humidity"
-    static let tempMin: String = "temp_min"
-    static let tempMax: String = "temp_max"
-}
+	enum CodingKeys: String, CodingKey {
 
-struct Main {
-    var temp: Int?
-    var pressure: Int?
-    var humidity: Int?
-    var tempMin: String?
-    var tempMax: String?
-    
-    init(json: JSON) {
-        self.temp = json[Keys.temp].intValue
-        self.pressure = json[Keys.pressure].intValue
-        self.humidity = json[Keys.humidity].intValue
-        self.tempMin = json[Keys.tempMin].stringValue
-        self.tempMax = json[Keys.tempMax].stringValue
-    }
-    
-    init() { }
+		case temp = "temp"
+		case pressure = "pressure"
+		case humidity = "humidity"
+		case tempMin = "temp_min"
+		case tempMax = "temp_max"
+	}
+
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		temp = try values.decodeIfPresent(Double.self, forKey: .temp)
+		pressure = try values.decodeIfPresent(Int.self, forKey: .pressure)
+		humidity = try values.decodeIfPresent(Int.self, forKey: .humidity)
+		tempMin = try values.decodeIfPresent(Double.self, forKey: .tempMin)
+		tempMax = try values.decodeIfPresent(Double.self, forKey: .tempMax)
+	}
+
 }

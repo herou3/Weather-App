@@ -1,34 +1,28 @@
-//
-//  Weather.swift
-//  WeatherApp
-//
 //  Created by Pavel Kurilov on 08.08.2018.
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import UIKit
-import TRON
-import SwiftyJSON
+import Foundation
+struct Weather: Codable {
+	let id: Int?
+	let main: String?
+	let description: String?
+	let icon: String?
 
-private struct Keys {
-    static let id: String = "id"
-    static let main: String = "main"
-    static let description: String = "description"
-    static let icon: String = "icon"
-}
+	enum CodingKeys: String, CodingKey {
 
-struct Weather {
-    var id: Int?
-    var main: String?
-    var description: String?
-    var icon: String?
-    
-    init(json: JSON) {
-        self.id = json[Keys.id].intValue
-        self.main = json[Keys.main].stringValue
-        self.description = json[Keys.description].stringValue
-        self.icon = json[Keys.icon].stringValue
-    }
-    
-    init() { }
+		case id
+		case main
+		case description
+		case icon
+	}
+
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		id = try values.decodeIfPresent(Int.self, forKey: .id)
+		main = try values.decodeIfPresent(String.self, forKey: .main)
+		description = try values.decodeIfPresent(String.self, forKey: .description)
+		icon = try values.decodeIfPresent(String.self, forKey: .icon)
+	}
+
 }

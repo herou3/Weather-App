@@ -1,40 +1,34 @@
-//
-//  Sys.swift
-//  WeatherApp
-//
 //  Created by Pavel Kurilov on 08.08.2018.
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import UIKit
-import TRON
-import SwiftyJSON
+import Foundation
+struct Sys: Codable {
+	let type: Int?
+	let identifier: Int?
+	let message: Double?
+	let country: String?
+	let sunrise: Int?
+	let sunset: Int?
 
-private struct Keys {
-    static let type: String = "type"
-    static let id: String = "id"
-    static let message: String = "message"
-    static let country: String = "country"
-    static let sunrise: String = "sunrise"
-    static let sunset: String = "sunset"
-}
+	enum CodingKeys: String, CodingKey {
 
-struct Sys {
-    var type: Int?
-    var id: Int?
-    var message: String?
-    var country: String?
-    var sunrise: String?
-    var sunset: String?
-    
-    init(json: JSON) {
-        self.type = json[Keys.type].intValue
-        self.id = json[Keys.id].intValue
-        self.message = json[Keys.message].stringValue
-        self.country = json[Keys.country].stringValue
-        self.sunrise = json[Keys.sunrise].stringValue
-        self.sunset = json[Keys.sunset].stringValue
-    }
-    
-    init() { }
+		case type
+		case identifier = "id"
+		case message
+		case country
+		case sunrise
+		case sunset
+	}
+
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		type = try values.decodeIfPresent(Int.self, forKey: .type)
+		identifier = try values.decodeIfPresent(Int.self, forKey: .identifier)
+		message = try values.decodeIfPresent(Double.self, forKey: .message)
+		country = try values.decodeIfPresent(String.self, forKey: .country)
+		sunrise = try values.decodeIfPresent(Int.self, forKey: .sunrise)
+		sunset = try values.decodeIfPresent(Int.self, forKey: .sunset)
+	}
+
 }

@@ -10,16 +10,19 @@ import LBTAComponents
 import SnapKit
 import TRON
 import SwiftyJSON
+import KRProgressHUD
 
 class WeatherDetailController: UIViewController {
     
-    // MARK: - Property
+    // MARK: - Properties
     private let weatherDetailView = WeatherDetailView()
     private var weatherTableView: UITableView = UITableView()
     private var weatherDictionary = [String: String]()
-    var heightNavBar: CGFloat = 0
-    private var networkService: NetworkService
+    private var heightNavBar: CGFloat = 0
+    private var networkService: NetworkService?
     private var weatherByCity: WeatherByCity?
+    public var curentLocation: Location?
+    private var networkServiceFL = NetworkServiceFL()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,11 +40,17 @@ class WeatherDetailController: UIViewController {
         self.configurateDictonary(valueOne: "test1", valueTwo: nil, valueThree: "test3", valueFour: "", valueFive: "test5")
     }
     
-    init(networkService: NetworkService) {
-        self.networkService = networkService
+//    init(nibName: String, bundle: Bundle?) {
+//        super.init(nibName: nibName, bundle: bundle)
+//    }
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    
+    init(location: Location) {
+        self.curentLocation = location
         super.init(nibName: nil, bundle: nil)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -79,7 +88,35 @@ class WeatherDetailController: UIViewController {
     }
     
     private func loadAndRefreshRecipesData() {
-        networkService.featchHomeFeed(city: "Rome")
+        let city = curentLocation?.city ?? ""
+        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)") else { return }
+//        networkServiceFL.featchHomeFeed(at: weatherRequestURL) { (data, error) in
+//        }
+        networkServiceFL.asyncExample2 {
+            KRProgressHUD.show()
+            let session = URLSession.
+            //let weatherRequestURL = URL(string: "\(Constant.baseUrl)?APPIDs=\(Constant.appId)&q=\(city)")
+            session.dataTask(with: weatherRequestURL) { (data, response, error) in
+                if error != nil {
+                    print(error ?? "Error")
+                    KRProgressHUD.showError()
+                    return
+                }
+                if let response = response {
+                    print(response)
+                }
+                guard let data = data else { return }
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    let jsonDecoder = JSONDecoder()
+                    let responseModel = try jsonDecoder.decode(WeatherByCity.self, from: data)
+                    self.weatherByCity = responseModel
+                } catch {
+                    print(error)
+                    KRProgressHUD.showError()
+                }
+            }.resume()
+        }
     }
     
     private func configurateNavigationBar() {

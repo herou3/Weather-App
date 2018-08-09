@@ -1,28 +1,22 @@
-//
-//  Wind.swift
-//  WeatherApp
-//
 //  Created by Pavel Kurilov on 08.08.2018.
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import UIKit
-import TRON
-import SwiftyJSON
+import Foundation
+struct Wind: Codable {
+	let speed: Double?
+	let deg: Int?
 
-private struct Keys {
-    static let speed: String = "speed"
-    static let deg: String = "deg"
-}
+	enum CodingKeys: String, CodingKey {
 
-struct Wind {
-    var speed: CGFloat?
-    var deg: Int?
-    
-    init(json: JSON) {
-        self.speed = CGFloat(json[Keys.speed].floatValue)
-        self.deg = json[Keys.deg].intValue
-    }
-    
-    init() { }
+		case speed
+		case deg
+	}
+
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+		speed = try values.decodeIfPresent(Double.self, forKey: .speed)
+		deg = try values.decodeIfPresent(Int.self, forKey: .deg)
+	}
+
 }

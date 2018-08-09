@@ -33,7 +33,9 @@ class WorldMapController: UINavigationController {
             }
         }
     }
-    private var networkService: NetworkService = NetworkService()
+    private var location: Location = Location()
+    private var networkServiceFL = NetworkServiceFL()
+    //private var networkService: NetworkServiceImpl = NetworkServiceImpl(session: URLSession)
     
     // MARK: - Init
     override func viewDidLoad() {
@@ -162,11 +164,19 @@ class WorldMapController: UINavigationController {
             self.placemarks.insert(placemark, at: 0)
             if placemark.locality != nil && placemark.location?.coordinate != nil {
                 self.isFindedLocality = true
+                
                 guard let locality = placemark.locality else { return }
                 guard let latitude = placemark.location?.coordinate.latitude else { return }
                 guard let longitude = placemark.location?.coordinate.longitude else { return }
-                let coordinateString = String("lat:\(Float(latitude).cleanValue) long:\(Float(longitude).cleanValue)")
-                self.descriptionLocationView.configureDescriptionLocationView(cityName: locality,
+                
+                self.location.city = locality
+                self.location.lat = CGFloat(latitude)
+                self.location.lon = CGFloat(longitude)
+                
+                let coordinateString = String(
+                    "lat:\(Float(self.location.lat!).cleanValue) long:\(Float(self.location.lon!).cleanValue)"
+                )
+                self.descriptionLocationView.configureDescriptionLocationView(cityName: self.location.city!,
                                                                                pointCoordinate: coordinateString)
             } else {
                 self.isFindedLocality = false
@@ -178,7 +188,8 @@ class WorldMapController: UINavigationController {
     
     // MARK: - Present WeatherDetailController
     @objc func pushDetailViewContorller() {
-        let weatherDetailController = WeatherDetailController(networkService: networkService)
+        let weatherDetailController = WeatherDetailController(location: self.location)
+        weatherDetailController.curentLocation = location
         let navController = UINavigationController(rootViewController: weatherDetailController)
         self.present(navController, animated: true, completion: nil)
     }

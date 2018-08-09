@@ -26,10 +26,15 @@
 		AB4ABDF8211B1225003E4302 /* Wind.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDF7211B1225003E4302 /* Wind.swift */; };
 		AB4ABDFA211B13D0003E4302 /* Clouds.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDF9211B13D0003E4302 /* Clouds.swift */; };
 		AB4ABDFC211B1441003E4302 /* Sys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDFB211B1441003E4302 /* Sys.swift */; };
-		AB4ABDFE211B158E003E4302 /* WeatherByCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDFD211B158E003E4302 /* WeatherByCity.swift */; };
-		AB4ABE00211B1BD3003E4302 /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABDFF211B1BD3003E4302 /* WeatherResponse.swift */; };
 		AB4ABE02211B2046003E4302 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE01211B2046003E4302 /* NetworkService.swift */; };
-		AB4ABE04211BA686003E4302 /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE03211BA686003E4302 /* MyError.swift */; };
+		AB4ABE06211BABD6003E4302 /* WeatherByCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE05211BABD6003E4302 /* WeatherByCity.swift */; };
+		AB4ABE08211BC989003E4302 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE07211BC989003E4302 /* ErrorResponse.swift */; };
+		AB4ABE0A211BCD4A003E4302 /* NetworkErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE09211BCD4A003E4302 /* NetworkErrorManager.swift */; };
+		AB4ABE0E211BDC0D003E4302 /* NetworkServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE0D211BDC0D003E4302 /* NetworkServiceImpl.swift */; };
+		AB4ABE11211BE3DB003E4302 /* WeatherDownloadServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE10211BE3DB003E4302 /* WeatherDownloadServiceImpl.swift */; };
+		AB4ABE13211BE44A003E4302 /* WeatherDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE12211BE44A003E4302 /* WeatherDownloadService.swift */; };
+		AB4ABE15211BEFB5003E4302 /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE14211BEFB5003E4302 /* NetworkTask.swift */; };
+		AB4ABE17211C312C003E4302 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE16211C312C003E4302 /* Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,10 +61,15 @@
 		AB4ABDF7211B1225003E4302 /* Wind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wind.swift; sourceTree = "<group>"; };
 		AB4ABDF9211B13D0003E4302 /* Clouds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clouds.swift; sourceTree = "<group>"; };
 		AB4ABDFB211B1441003E4302 /* Sys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sys.swift; sourceTree = "<group>"; };
-		AB4ABDFD211B158E003E4302 /* WeatherByCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherByCity.swift; sourceTree = "<group>"; };
-		AB4ABDFF211B1BD3003E4302 /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
 		AB4ABE01211B2046003E4302 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		AB4ABE03211BA686003E4302 /* MyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyError.swift; sourceTree = "<group>"; };
+		AB4ABE05211BABD6003E4302 /* WeatherByCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherByCity.swift; sourceTree = "<group>"; };
+		AB4ABE07211BC989003E4302 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
+		AB4ABE09211BCD4A003E4302 /* NetworkErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorManager.swift; sourceTree = "<group>"; };
+		AB4ABE0D211BDC0D003E4302 /* NetworkServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceImpl.swift; sourceTree = "<group>"; };
+		AB4ABE10211BE3DB003E4302 /* WeatherDownloadServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDownloadServiceImpl.swift; sourceTree = "<group>"; };
+		AB4ABE12211BE44A003E4302 /* WeatherDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDownloadService.swift; sourceTree = "<group>"; };
+		AB4ABE14211BEFB5003E4302 /* NetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTask.swift; sourceTree = "<group>"; };
+		AB4ABE16211C312C003E4302 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,8 +138,9 @@
 				AB4ABDF7211B1225003E4302 /* Wind.swift */,
 				AB4ABDF9211B13D0003E4302 /* Clouds.swift */,
 				AB4ABDFB211B1441003E4302 /* Sys.swift */,
-				AB4ABDFD211B158E003E4302 /* WeatherByCity.swift */,
-				AB4ABE03211BA686003E4302 /* MyError.swift */,
+				AB4ABE05211BABD6003E4302 /* WeatherByCity.swift */,
+				AB4ABE07211BC989003E4302 /* ErrorResponse.swift */,
+				AB4ABE16211C312C003E4302 /* Location.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -182,10 +193,22 @@
 		AB4ABDEC21123026003E4302 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				AB4ABDFF211B1BD3003E4302 /* WeatherResponse.swift */,
+				AB4ABE0F211BE3B1003E4302 /* WeatherDownloadService */,
 				AB4ABE01211B2046003E4302 /* NetworkService.swift */,
+				AB4ABE0D211BDC0D003E4302 /* NetworkServiceImpl.swift */,
+				AB4ABE09211BCD4A003E4302 /* NetworkErrorManager.swift */,
+				AB4ABE14211BEFB5003E4302 /* NetworkTask.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		AB4ABE0F211BE3B1003E4302 /* WeatherDownloadService */ = {
+			isa = PBXGroup;
+			children = (
+				AB4ABE10211BE3DB003E4302 /* WeatherDownloadServiceImpl.swift */,
+				AB4ABE12211BE44A003E4302 /* WeatherDownloadService.swift */,
+			);
+			path = WeatherDownloadService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,21 +350,26 @@
 			files = (
 				AB4ABDDD21122EBD003E4302 /* WeatherDetailView.swift in Sources */,
 				AB4ABDF2211B0B4D003E4302 /* Coord.swift in Sources */,
-				AB4ABDFE211B158E003E4302 /* WeatherByCity.swift in Sources */,
 				AB091B362110AA7E007C1782 /* WorldMapController.swift in Sources */,
 				AB4ABE02211B2046003E4302 /* NetworkService.swift in Sources */,
+				AB4ABE0A211BCD4A003E4302 /* NetworkErrorManager.swift in Sources */,
 				AB4ABDF4211B0FC3003E4302 /* Weather.swift in Sources */,
-				AB4ABE04211BA686003E4302 /* MyError.swift in Sources */,
 				AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */,
 				AB4ABDFC211B1441003E4302 /* Sys.swift in Sources */,
+				AB4ABE0E211BDC0D003E4302 /* NetworkServiceImpl.swift in Sources */,
 				AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */,
-				AB4ABE00211B1BD3003E4302 /* WeatherResponse.swift in Sources */,
+				AB4ABE17211C312C003E4302 /* Location.swift in Sources */,
+				AB4ABE15211BEFB5003E4302 /* NetworkTask.swift in Sources */,
 				AB4ABDF6211B1154003E4302 /* Main.swift in Sources */,
 				AB4ABDEB21123008003E4302 /* Constants.swift in Sources */,
 				AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */,
+				AB4ABE11211BE3DB003E4302 /* WeatherDownloadServiceImpl.swift in Sources */,
+				AB4ABE13211BE44A003E4302 /* WeatherDownloadService.swift in Sources */,
 				AB091B342110AA7E007C1782 /* AppDelegate.swift in Sources */,
 				AB4ABDEE2117177C003E4302 /* Float+CleanValue.swift in Sources */,
+				AB4ABE06211BABD6003E4302 /* WeatherByCity.swift in Sources */,
 				AB4ABDFA211B13D0003E4302 /* Clouds.swift in Sources */,
+				AB4ABE08211BC989003E4302 /* ErrorResponse.swift in Sources */,
 				AB4ABDE721122FB2003E4302 /* WeatherDetailController.swift in Sources */,
 				AB4ABDF8211B1225003E4302 /* Wind.swift in Sources */,
 			);
