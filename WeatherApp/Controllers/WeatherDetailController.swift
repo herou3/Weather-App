@@ -19,10 +19,9 @@ class WeatherDetailController: UIViewController {
     private var weatherTableView: UITableView = UITableView()
     private var weatherDictionary = [String: String]()
     private var heightNavBar: CGFloat = 0
-    private var networkService: NetworkService?
     private var weatherByCity: WeatherByCity?
     public var curentLocation: Location?
-    private var networkServiceFL = NetworkServiceFL()
+    private var networkService = NetworkServiceImpl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,19 +32,8 @@ class WeatherDetailController: UIViewController {
                                                                     weatherDegree: "+32")
         heightNavBar = (self.navigationController?.navigationBar.frame.height)!
         configurateWeatherDetailController()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close",
-                                                           style: .done,
-                                                           target: self,
-                                                           action: #selector(cancelWeatherDetailView))
-        self.configurateDictonary(valueOne: "test1", valueTwo: nil, valueThree: "test3", valueFour: "", valueFive: "test5")
+        self.updateDataWeather(valueOne: "test1", valueTwo: nil, valueThree: "test3", valueFour: "", valueFive: "test5")
     }
-    
-//    init(nibName: String, bundle: Bundle?) {
-//        super.init(nibName: nibName, bundle: bundle)
-//    }
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     
     init(location: Location) {
         self.curentLocation = location
@@ -78,59 +66,38 @@ class WeatherDetailController: UIViewController {
         self.view.addSubview(weatherTableView)
     }
     
-    private func configurateWeatherDetailController() {
-        addWeatherDetailView()
-        addWeatherTableView()
-    }
-    
-    @objc private func cancelWeatherDetailView() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    private func loadAndRefreshRecipesData() {
-        let city = curentLocation?.city ?? ""
-        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)") else { return }
-//        networkServiceFL.featchHomeFeed(at: weatherRequestURL) { (data, error) in
-//        }
-        networkServiceFL.asyncExample2 {
-            KRProgressHUD.show()
-            let session = URLSession.
-            //let weatherRequestURL = URL(string: "\(Constant.baseUrl)?APPIDs=\(Constant.appId)&q=\(city)")
-            session.dataTask(with: weatherRequestURL) { (data, response, error) in
-                if error != nil {
-                    print(error ?? "Error")
-                    KRProgressHUD.showError()
-                    return
-                }
-                if let response = response {
-                    print(response)
-                }
-                guard let data = data else { return }
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    let jsonDecoder = JSONDecoder()
-                    let responseModel = try jsonDecoder.decode(WeatherByCity.self, from: data)
-                    self.weatherByCity = responseModel
-                } catch {
-                    print(error)
-                    KRProgressHUD.showError()
-                }
-            }.resume()
-        }
-    }
-    
     private func configurateNavigationBar() {
         navigationController?.navigationBar.barTintColor = UIColor.cardinal
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = .black
-        navigationItem.title = "London"
+        navigationItem.title = curentLocation?.city
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(cancelWeatherDetailView))
     }
     
-    private func configurateDictonary(valueOne: String?,
-                                      valueTwo: String?,
-                                      valueThree: String?,
-                                      valueFour: String?,
-                                      valueFive: String?) {
+    private func configurateWeatherDetailController() {
+        configurateNavigationBar()
+        addWeatherDetailView()
+        addWeatherTableView()
+    }
+    
+    private func loadAndRefreshRecipesData() {
+        let city = curentLocation?.city ?? ""
+        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID1=\(Constant.appId)&q=\(city)") else { return }
+        networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
+            print("Hello")
+            self.weatherByCity = resposeModel
+            print("Test")
+        }
+    }
+    
+    private func updateDataWeather(valueOne: String?,
+                                   valueTwo: String?,
+                                   valueThree: String?,
+                                   valueFour: String?,
+                                   valueFive: String?) {
         if valueOne != "" && valueOne != nil {
             weatherDictionary["Pressure"] = valueOne
         }
@@ -146,6 +113,10 @@ class WeatherDetailController: UIViewController {
         if valueFive != "" && valueFour != nil {
             weatherDictionary["Visibility"] = valueFive
         }
+    }
+    
+    @objc private func cancelWeatherDetailView() {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

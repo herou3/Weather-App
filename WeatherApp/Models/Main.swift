@@ -5,10 +5,12 @@
 import Foundation
 struct Main: Codable {
 	let temp: Double?
-	let pressure: Int?
+	let pressure: Double?
 	let humidity: Int?
 	let tempMin: Double?
 	let tempMax: Double?
+    let seaLevel: Double?
+    let grndLevel: Double?
 
 	enum CodingKeys: String, CodingKey {
 
@@ -17,15 +19,19 @@ struct Main: Codable {
 		case humidity = "humidity"
 		case tempMin = "temp_min"
 		case tempMax = "temp_max"
+        case seaLevel = "sea_Level"
+        case grndLevel = "grnd_Level"
 	}
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
 		temp = try values.decodeIfPresent(Double.self, forKey: .temp)
-		pressure = try values.decodeIfPresent(Int.self, forKey: .pressure)
+		pressure = try values.decodeIfPresent(Double.self, forKey: .pressure)
 		humidity = try values.decodeIfPresent(Int.self, forKey: .humidity)
 		tempMin = try values.decodeIfPresent(Double.self, forKey: .tempMin)
 		tempMax = try values.decodeIfPresent(Double.self, forKey: .tempMax)
+        seaLevel = try values.decodeIfPresent(Double.self, forKey: .seaLevel)
+        grndLevel = try values.decodeIfPresent(Double.self, forKey: .grndLevel)
 	}
 
 }

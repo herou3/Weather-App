@@ -34,7 +34,7 @@ class WorldMapController: UINavigationController {
         }
     }
     private var location: Location = Location()
-    private var networkServiceFL = NetworkServiceFL()
+    private var networkService = NetworkServiceImpl()
     //private var networkService: NetworkServiceImpl = NetworkServiceImpl(session: URLSession)
     
     // MARK: - Init

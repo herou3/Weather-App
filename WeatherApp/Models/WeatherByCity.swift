@@ -16,7 +16,7 @@ struct WeatherByCity: Codable {
     let sys: Sys?
     let identifier: Int?
     let name: String?
-    let cod: Int?
+    let code: Int?
     
     enum CodingKeys: String, CodingKey {
         
@@ -31,7 +31,7 @@ struct WeatherByCity: Codable {
         case sys
         case identifier = "id"
         case name
-        case cod
+        case code = "cod"
     }
     
     init(from decoder: Decoder) throws {
@@ -47,7 +47,7 @@ struct WeatherByCity: Codable {
         sys = try values.decodeIfPresent(Sys.self, forKey: .sys)
         identifier = try values.decodeIfPresent(Int.self, forKey: .identifier)
         name = try values.decodeIfPresent(String.self, forKey: .name)
-        cod = try values.decodeIfPresent(Int.self, forKey: .cod)
+        code = try values.decodeIfPresent(Int.self, forKey: .code)
     }
     
 }
