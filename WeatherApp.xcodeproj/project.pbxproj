@@ -32,6 +32,7 @@
 		AB4ABE0A211BCD4A003E4302 /* NetworkErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE09211BCD4A003E4302 /* NetworkErrorManager.swift */; };
 		AB4ABE17211C312C003E4302 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE16211C312C003E4302 /* Location.swift */; };
 		ABF704B4211D18170081BC81 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B3211D18170081BC81 /* NetworkService.swift */; };
+		ABF704B6211D31270081BC81 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B5211D31270081BC81 /* Alert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		AB4ABE09211BCD4A003E4302 /* NetworkErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorManager.swift; sourceTree = "<group>"; };
 		AB4ABE16211C312C003E4302 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		ABF704B3211D18170081BC81 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		ABF704B5211D31270081BC81 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4ABDEA21123008003E4302 /* Constants.swift */,
+				ABF704B5211D31270081BC81 /* Alert.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				AB4ABE0A211BCD4A003E4302 /* NetworkErrorManager.swift in Sources */,
 				AB4ABDF4211B0FC3003E4302 /* Weather.swift in Sources */,
 				AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */,
+				ABF704B6211D31270081BC81 /* Alert.swift in Sources */,
 				AB4ABDFC211B1441003E4302 /* Sys.swift in Sources */,
 				AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */,
 				AB4ABE17211C312C003E4302 /* Location.swift in Sources */,

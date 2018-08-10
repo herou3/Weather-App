@@ -18,6 +18,7 @@ class NetworkServiceImpl: NetworkService {
     // MARK: - Action
     func featchHomeFeed(at url: URL, completion: @escaping (WeatherByCity?, ErrorResponse?) -> Void) {
         let session = URLSession.shared
+        KRProgressHUD.show()
         let dataTask = session.dataTask(with: url) { (data, response, error) in
             if let response = response {
                 print(response)

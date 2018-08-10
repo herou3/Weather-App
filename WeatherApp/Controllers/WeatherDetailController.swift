@@ -27,12 +27,10 @@ class WeatherDetailController: UIViewController {
         super.viewDidLoad()
         configurateNavigationBar()
         loadAndRefreshRecipesData()
-        self.view.backgroundColor = UIColor.mainColor
         weatherDetailView.configurateDataForDescriptionLocationView(weatherImage: #imageLiteral(resourceName: "defaultWeather-icon"),
                                                                     weatherDegree: "+32")
         heightNavBar = (self.navigationController?.navigationBar.frame.height)!
         configurateWeatherDetailController()
-        self.updateDataWeather(valueOne: "test1", valueTwo: nil, valueThree: "test3", valueFour: "", valueFive: "test5")
     }
     
     init(location: Location) {
@@ -78,41 +76,62 @@ class WeatherDetailController: UIViewController {
     }
     
     private func configurateWeatherDetailController() {
+        self.view.backgroundColor = UIColor.mainColor
         configurateNavigationBar()
         addWeatherDetailView()
         addWeatherTableView()
     }
     
+    // MARK: - Load serviceData
     private func loadAndRefreshRecipesData() {
         let city = curentLocation?.city ?? ""
-        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID1=\(Constant.appId)&q=\(city)") else { return }
+        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)") else { return }
         networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
             print("Hello")
-            self.weatherByCity = resposeModel
+            if resposeModel != nil {
+                self.weatherByCity = resposeModel
+                DispatchQueue.main.async {
+                    self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
+                                           humidityValue: self.weatherByCity?.main?.humidity,
+                                           windValue: self.weatherByCity?.wind?.speed,
+                                           quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
+                                           visibilityValue: self.weatherByCity?.visibility)
+                    self.weatherTableView.reloadData()
+                    KRProgressHUD.dismiss()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let errorMessage = error?.message ?? ""
+                    let errorCode: String = "Error \(error?.cod ?? 0)"
+                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
+                    KRProgressHUD.dismiss()
+                }
+            }
             print("Test")
         }
     }
     
-    private func updateDataWeather(valueOne: String?,
-                                   valueTwo: String?,
-                                   valueThree: String?,
-                                   valueFour: String?,
-                                   valueFive: String?) {
-        if valueOne != "" && valueOne != nil {
-            weatherDictionary["Pressure"] = valueOne
+    private func updateDataWeather(pressureValue: Double?,
+                                   humidityValue: Int?,
+                                   windValue: Double?,
+                                   quantityOfCloudsValue: Int?,
+                                   visibilityValue: Int?) {
+        if pressureValue != nil {
+            weatherDictionary["Pressure"] = "\(pressureValue ?? 0) mb"
         }
-        if valueTwo != "" && valueTwo != nil {
-            weatherDictionary["Humidity"] = valueTwo
+        if humidityValue != nil {
+            weatherDictionary["Humidity"] = "\(humidityValue ?? 0)%"
         }
-        if valueThree != "" && valueThree != nil {
-            weatherDictionary["Wind"] = valueThree
+        if windValue != nil {
+            weatherDictionary["Wind"] = "\(windValue ?? 0) km/h"
         }
-        if valueFour != "" && valueFour != nil {
-            weatherDictionary["QuantityOfClouds"] = valueFour
+        if quantityOfCloudsValue != nil {
+            weatherDictionary["QuantityOfClouds"] = "\(quantityOfCloudsValue ?? 0)%"
         }
-        if valueFive != "" && valueFour != nil {
-            weatherDictionary["Visibility"] = valueFive
+        if visibilityValue != nil {
+            weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) km"
         }
+        weatherTableView.reloadData()
     }
     
     @objc private func cancelWeatherDetailView() {
@@ -120,7 +139,8 @@ class WeatherDetailController: UIViewController {
     }
 }
 
-extension WeatherDetailController: UITableViewDataSource, UITableViewDelegate {
+// MARK: - Table DataSource
+extension WeatherDetailController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -130,18 +150,6 @@ extension WeatherDetailController: UITableViewDataSource, UITableViewDelegate {
         view.tintColor = UIColor.red
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = UIColor.white
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .orange
-        
-        let label = UILabel()
-        label.text = Array(weatherDictionary)[section].key
-        label.frame = CGRect(x: 8, y: 0, width: self.view.frame.width, height: 25)
-        view.addSubview(label)
-        
-        return view
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -169,5 +177,21 @@ extension WeatherDetailController: UITableViewDataSource, UITableViewDelegate {
                    willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         tableView.deselectRow(at: indexPath, animated: true)
         return indexPath
+    }
+}
+
+// MARK: - TableView Delegate
+extension WeatherDetailController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = .orange
+        
+        let label = UILabel()
+        label.text = Array(weatherDictionary)[section].key
+        label.frame = CGRect(x: 8, y: 0, width: self.view.frame.width, height: 25)
+        view.addSubview(label)
+        
+        return view
     }
 }
