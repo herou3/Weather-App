@@ -16,7 +16,7 @@ struct WeatherByCity: Codable {
     let sys: Sys?
     let identifier: Int?
     let name: String?
-    let code: Int?
+    var code: Int?
     
     enum CodingKeys: String, CodingKey {
         
@@ -48,6 +48,6 @@ struct WeatherByCity: Codable {
         identifier = try values.decodeIfPresent(Int.self, forKey: .identifier)
         name = try values.decodeIfPresent(String.self, forKey: .name)
         code = try values.decodeIfPresent(Int.self, forKey: .code)
+        code =  try values.decode(Int.self, forKey: .code)
     }
-    
 }

@@ -9,7 +9,6 @@
 import MapKit
 import SnapKit
 import KRProgressHUD
-import TRON
 
 class WorldMapController: UINavigationController {
     
@@ -35,7 +34,6 @@ class WorldMapController: UINavigationController {
     }
     private var location: Location = Location()
     private var networkService = NetworkServiceImpl()
-    //private var networkService: NetworkServiceImpl = NetworkServiceImpl(session: URLSession)
     
     // MARK: - Init
     override func viewDidLoad() {

@@ -23,9 +23,9 @@ class WeatherDetailView: UIView {
     }
     
     // MARK: - Create UI elements
-    private let weatherDescriptionImageView: CachedImageView = {
+    private var weatherDescriptionImageView: CachedImageView = {
         var imageView: CachedImageView = CachedImageView()
-        imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
+        ///imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -66,18 +66,20 @@ class WeatherDetailView: UIView {
         addWeatherDescriptionImageView()
         addDegreesWeatherLabel()
     }
-    
-    // MARK: - Configurate data for DescriptionLocationView
 }
 
+// MARK: - Configurate data for DescriptionLocationView
 extension WeatherDetailView {
-    func configurateDataForDescriptionLocationView(weatherImage: UIImage?,
+    func configurateDataForDescriptionLocationView(weatherImage: String,
                                                    weatherDegree: String?) {
         if weatherDegree != "" ||
             weatherDegree != nil {
             degreesWeatherLabel.text = weatherDegree
         } else {
-            degreesWeatherLabel.text = weatherDegree
+            degreesWeatherLabel.text = "-"
+        }
+        if weatherImage != nil {
+            weatherDescriptionImageView.loadImage(urlString: weatherImage)
         }
     }
 }

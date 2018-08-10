@@ -20,4 +20,5 @@ struct Constant {
     static let cellHeight: CGFloat = 310
     static let maxImagesCount: Int = 10
     static let coordinatesOfParis = CLLocationCoordinate2D(latitude: 48.85341, longitude: 2.3488)
+    static let kelvinTemperatureZero: Double = 273.15
 }

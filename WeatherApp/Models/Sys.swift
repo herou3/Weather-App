@@ -3,6 +3,7 @@
 //
 
 import Foundation
+
 struct Sys: Codable {
 	let type: Int?
 	let identifier: Int?

@@ -18,23 +18,24 @@ class NetworkServiceImpl: NetworkService {
     // MARK: - Action
     func featchHomeFeed(at url: URL, completion: @escaping (WeatherByCity?, ErrorResponse?) -> Void) {
         let session = URLSession.shared
-        KRProgressHUD.show()
         let dataTask = session.dataTask(with: url) { (data, response, error) in
+            if error != nil {
+                print(error)
+            }
+            guard let data = data else { return }
             if let response = response {
                 print(response)
             }
-            guard let data = data else { return }
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 print(json)
                 let jsonDecoder = JSONDecoder()
-                let responseModel = try jsonDecoder.decode(WeatherByCity.self, from: data)
-                if responseModel.code != 200 {
-                    let responseModel = try jsonDecoder.decode(ErrorResponse.self, from: data)
-                    completion(nil, responseModel)
-                } else {
-                    print(responseModel)
+                if (response as? HTTPURLResponse)?.statusCode == 200 {
+                    let responseModel = try jsonDecoder.decode(WeatherByCity.self, from: data)
                     completion(responseModel, nil)
+                } else {
+                    let errorCode = try jsonDecoder.decode(ErrorResponse.self, from: data)
+                    completion(nil, errorCode)
                 }
             } catch {
                 print(error)

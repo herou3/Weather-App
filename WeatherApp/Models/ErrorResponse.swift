@@ -8,21 +8,25 @@
 
 import Foundation
 
-import Foundation
 struct ErrorResponse: Codable {
-    let cod: Int?
+    let code: Int?
     let message: String?
     
     enum CodingKeys: String, CodingKey {
         
-        case cod
+        case code = "cod"
         case message
     }
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        cod = try values.decodeIfPresent(Int.self, forKey: .cod)
+        if let code =  try? values.decode(Int.self, forKey: .code) {
+            self.code = code
+        } else if let code = try? values.decode(String.self, forKey: .code) {
+            self.code = Int(code)
+        } else {
+            code = nil
+        }
         message = try values.decodeIfPresent(String.self, forKey: .message)
     }
-    
 }

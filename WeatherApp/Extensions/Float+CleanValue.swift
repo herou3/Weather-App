@@ -9,6 +9,8 @@
 import Foundation
 
 extension Float {
+    
+    // MARK: - Common
     var cleanValue: String {
         return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.3f", self) : String(self)
     }

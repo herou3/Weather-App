@@ -8,8 +8,6 @@
 
 import LBTAComponents
 import SnapKit
-import TRON
-import SwiftyJSON
 import KRProgressHUD
 
 class WeatherDetailController: UIViewController {
@@ -25,10 +23,7 @@ class WeatherDetailController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurateNavigationBar()
         loadAndRefreshRecipesData()
-        weatherDetailView.configurateDataForDescriptionLocationView(weatherImage: #imageLiteral(resourceName: "defaultWeather-icon"),
-                                                                    weatherDegree: "+32")
         heightNavBar = (self.navigationController?.navigationBar.frame.height)!
         configurateWeatherDetailController()
     }
@@ -84,8 +79,11 @@ class WeatherDetailController: UIViewController {
     
     // MARK: - Load serviceData
     private func loadAndRefreshRecipesData() {
-        let city = curentLocation?.city ?? ""
+        let urlString: String? = curentLocation?.city?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        let city = urlString ?? ""
+        determiningAvailabilityOfInternet()
         guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)") else { return }
+        KRProgressHUD.show()
         networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
             print("Hello")
             if resposeModel != nil {
@@ -95,16 +93,19 @@ class WeatherDetailController: UIViewController {
                                            humidityValue: self.weatherByCity?.main?.humidity,
                                            windValue: self.weatherByCity?.wind?.speed,
                                            quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
-                                           visibilityValue: self.weatherByCity?.visibility)
+                                           visibilityValue: self.weatherByCity?.visibility,
+                                           weatherUrl: self.weatherByCity?.weather?.first?.icon,
+                                           weatherTemp: self.weatherByCity?.main?.temp)
                     self.weatherTableView.reloadData()
                     KRProgressHUD.dismiss()
+                    print(error ?? "we")
                 }
             } else {
                 DispatchQueue.main.async {
                     let errorMessage = error?.message ?? ""
-                    let errorCode: String = "Error \(error?.cod ?? 0)"
-                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
+                    let errorCode: String = "Error \(error?.code ?? 0)"
                     KRProgressHUD.dismiss()
+                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
                 }
             }
             print("Test")
@@ -115,7 +116,9 @@ class WeatherDetailController: UIViewController {
                                    humidityValue: Int?,
                                    windValue: Double?,
                                    quantityOfCloudsValue: Int?,
-                                   visibilityValue: Int?) {
+                                   visibilityValue: Int?,
+                                   weatherUrl: String?,
+                                   weatherTemp: Double?) {
         if pressureValue != nil {
             weatherDictionary["Pressure"] = "\(pressureValue ?? 0) mb"
         }
@@ -131,11 +134,45 @@ class WeatherDetailController: UIViewController {
         if visibilityValue != nil {
             weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) km"
         }
+        let imageUrl = "http://openweathermap.org/img/w/\(weatherUrl ?? "03d").png"
+        guard let fTempDouble = weatherTemp else { return }
+        let celsiusTempDouble = fTempDouble - Constant.kelvinTemperatureZero
+        let celsiusTempString = "\(String(format: "%.0f", celsiusTempDouble)) °C"
+        weatherDetailView.configurateDataForDescriptionLocationView(weatherImage: imageUrl, weatherDegree: celsiusTempString)
         weatherTableView.reloadData()
     }
     
     @objc private func cancelWeatherDetailView() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - DetectedInternetConnection
+    func determiningAvailabilityOfInternet() {
+        if ReachabilityConnect.isConnectedToNetwork() {
+        } else {
+            let alert = UIAlertController(title: "Oops, you have problem",
+                                          message: "The Internet connection appears to be offline",
+                                          preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay...",
+                                          style: UIAlertActionStyle.default,
+                                          handler: nil))
+            self.present(alert,
+                         animated: true,
+                         completion: nil)
+        }
+    }
+    
+    private func setupRecipeImage(recipeImage: String?) -> CachedImageView {
+        if let recipeImageViewURL = recipeImage {
+            let imageView = CachedImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.loadImage(urlString: recipeImageViewURL)
+            return imageView
+        }   else {
+            let imageView = CachedImageView()
+            imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
+            return imageView
+        }
     }
 }
 
