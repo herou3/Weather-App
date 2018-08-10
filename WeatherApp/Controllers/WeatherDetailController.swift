@@ -81,34 +81,37 @@ class WeatherDetailController: UIViewController {
     private func loadAndRefreshRecipesData() {
         let urlString: String? = curentLocation?.city?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let city = urlString ?? ""
-        determiningAvailabilityOfInternet()
-        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(Constant.appId)&q=\(city)") else { return }
-        KRProgressHUD.show()
-        networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
-            print("Hello")
-            if resposeModel != nil {
-                self.weatherByCity = resposeModel
-                DispatchQueue.main.async {
-                    self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
-                                           humidityValue: self.weatherByCity?.main?.humidity,
-                                           windValue: self.weatherByCity?.wind?.speed,
-                                           quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
-                                           visibilityValue: self.weatherByCity?.visibility,
-                                           weatherUrl: self.weatherByCity?.weather?.first?.icon,
-                                           weatherTemp: self.weatherByCity?.main?.temp)
-                    self.weatherTableView.reloadData()
-                    KRProgressHUD.dismiss()
-                    print(error ?? "we")
+        if ReachabilityConnect.isConnectedToNetwork() {
+            guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else { return }
+            KRProgressHUD.show()
+            networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
+                print("Hello")
+                if resposeModel != nil {
+                    self.weatherByCity = resposeModel
+                    DispatchQueue.main.async {
+                        self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
+                                               humidityValue: self.weatherByCity?.main?.humidity,
+                                               windValue: self.weatherByCity?.wind?.speed,
+                                               quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
+                                               visibilityValue: self.weatherByCity?.visibility,
+                                               weatherUrl: self.weatherByCity?.weather?.first?.icon,
+                                               weatherTemp: self.weatherByCity?.main?.temp)
+                        self.weatherTableView.reloadData()
+                        KRProgressHUD.dismiss()
+                        print(error ?? "we")
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let errorMessage = error?.message ?? ""
+                        let errorCode: String = "Error \(error?.code ?? 0)"
+                        KRProgressHUD.dismiss()
+                        Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
+                    }
                 }
-            } else {
-                DispatchQueue.main.async {
-                    let errorMessage = error?.message ?? ""
-                    let errorCode: String = "Error \(error?.code ?? 0)"
-                    KRProgressHUD.dismiss()
-                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
-                }
+                print("Test")
             }
-            print("Test")
+        } else {
+            Alert.showBasicAlert(on: self, with: "Oops, you have problem", message: "The Internet connection appears to be offline")
         }
     }
     
@@ -147,21 +150,6 @@ class WeatherDetailController: UIViewController {
     }
     
     // MARK: - DetectedInternetConnection
-    func determiningAvailabilityOfInternet() {
-        if ReachabilityConnect.isConnectedToNetwork() {
-        } else {
-            let alert = UIAlertController(title: "Oops, you have problem",
-                                          message: "The Internet connection appears to be offline",
-                                          preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay...",
-                                          style: UIAlertActionStyle.default,
-                                          handler: nil))
-            self.present(alert,
-                         animated: true,
-                         completion: nil)
-        }
-    }
-    
     private func setupRecipeImage(recipeImage: String?) -> CachedImageView {
         if let recipeImageViewURL = recipeImage {
             let imageView = CachedImageView()

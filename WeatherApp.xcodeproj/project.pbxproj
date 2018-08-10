@@ -33,6 +33,7 @@
 		ABF704B4211D18170081BC81 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B3211D18170081BC81 /* NetworkService.swift */; };
 		ABF704B6211D31270081BC81 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B5211D31270081BC81 /* Alert.swift */; };
 		ABF704B8211D414B0081BC81 /* ReachabilityConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B7211D414B0081BC81 /* ReachabilityConnect.swift */; };
+		ABF704BA211D83C00081BC81 /* NetworkAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B9211D83C00081BC81 /* NetworkAccess.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		ABF704B3211D18170081BC81 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		ABF704B5211D31270081BC81 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		ABF704B7211D414B0081BC81 /* ReachabilityConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityConnect.swift; sourceTree = "<group>"; };
+		ABF704B9211D83C00081BC81 /* NetworkAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAccess.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				AB4ABE01211B2046003E4302 /* NetworkServiceIpml.swift */,
+				ABF704B9211D83C00081BC81 /* NetworkAccess.swift */,
 				ABF704B3211D18170081BC81 /* NetworkService.swift */,
 			);
 			path = Service;
@@ -273,23 +276,17 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherApp/Pods-WeatherApp-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/LBTAComponents/LBTAComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/TRON/TRON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBTAComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TRON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -346,6 +343,7 @@
 				AB4ABDFC211B1441003E4302 /* Sys.swift in Sources */,
 				AB4ABDDF21122ED0003E4302 /* WorldMapView.swift in Sources */,
 				AB4ABE17211C312C003E4302 /* Location.swift in Sources */,
+				ABF704BA211D83C00081BC81 /* NetworkAccess.swift in Sources */,
 				AB4ABDF6211B1154003E4302 /* Main.swift in Sources */,
 				AB4ABDEB21123008003E4302 /* Constants.swift in Sources */,
 				AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */,

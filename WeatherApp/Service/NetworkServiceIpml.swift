@@ -19,9 +19,6 @@ class NetworkServiceImpl: NetworkService {
     func featchHomeFeed(at url: URL, completion: @escaping (WeatherByCity?, ErrorResponse?) -> Void) {
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) { (data, response, error) in
-            if error != nil {
-                print(error)
-            }
             guard let data = data else { return }
             if let response = response {
                 print(response)
