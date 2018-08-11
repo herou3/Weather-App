@@ -11,13 +11,11 @@ import UIKit
 import MapKit
 
 struct Constant {
-    static var appName: String? {
-        return Bundle.main.infoDictionary!["CFBundleName"] as? String
-    }
-    static let marginLeftAndRight: CGFloat = 32.0
+    static let marginLeftAndRightValue: CGFloat = 16.0
+    static let briefInformationHightValue: CGFloat = 132
     static let baseUrl: String = "http://api.openweathermap.org/data/2.5/weather"
-    static let cellHeight: CGFloat = 310
-    static let maxImagesCount: Int = 10
     static let coordinatesOfParis = CLLocationCoordinate2D(latitude: 48.85341, longitude: 2.3488)
     static let kelvinTemperatureZero: Double = 273.15
+    static let latitudeDeltaValue: CLLocationDegrees = 0.017
+    static let longitudeDeltaValue: CLLocationDegrees = 0.017
 }

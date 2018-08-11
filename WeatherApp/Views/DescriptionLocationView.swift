@@ -51,8 +51,8 @@ class DescriptionLocationView: UIView {
     private func addNameCityLabel() {
         addSubview(nameCityLabel)
         nameCityLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self).offset(16)
-            make.left.equalTo(self).offset(16)
+            make.top.equalTo(self).offset(Constant.marginLeftAndRightValue)
+            make.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
             make.right.equalToSuperview().dividedBy(2)
         }
     }
@@ -62,18 +62,18 @@ class DescriptionLocationView: UIView {
         detailWeatherButton.snp.makeConstraints { (make) in
             make.right.equalTo(self)
             make.left.equalTo(nameCityLabel.snp.right)
-            make.top.equalTo(self).offset(16)
-            make.bottom.equalTo(self).offset(-16)
+            make.top.equalTo(self).offset(Constant.marginLeftAndRightValue)
+            make.bottom.equalTo(self).offset(-Constant.marginLeftAndRightValue)
         }
     }
     
     private func addCoordinateLabel() {
         addSubview(coordinateLabel)
         coordinateLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(nameCityLabel.snp.bottom).offset(8)
+            make.top.equalTo(nameCityLabel.snp.bottom).offset(Constant.marginLeftAndRightValue / 2)
             make.right.equalToSuperview().dividedBy(2)
-            make.left.equalTo(self).offset(16)
-            make.bottom.equalToSuperview().offset(-16)
+            make.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
+            make.bottom.equalToSuperview().offset(-Constant.marginLeftAndRightValue)
         }
     }
     

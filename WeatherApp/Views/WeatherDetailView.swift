@@ -36,7 +36,7 @@ class WeatherDetailView: UIView {
         var degreesLabel: UILabel = UILabel()
         degreesLabel.translatesAutoresizingMaskIntoConstraints = false
         degreesLabel.textColor = UIColor.carmine
-        degreesLabel.font = UIFont.systemFont(ofSize: 24)
+        degreesLabel.font = UIFont.systemFont(ofSize: 32)
         return degreesLabel
     }()
 
@@ -45,8 +45,8 @@ class WeatherDetailView: UIView {
     private  func addWeatherDescriptionImageView() {
         addSubview(weatherDescriptionImageView)
         weatherDescriptionImageView.snp.makeConstraints { (make) in
-            make.top.left.equalTo(self).offset(16)
-            make.left.equalTo(self).offset(16)
+            make.top.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
+            make.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
             make.height.equalTo(100)
             make.width.equalTo(100)
         }
@@ -55,9 +55,9 @@ class WeatherDetailView: UIView {
     private func addDegreesWeatherLabel() {
         addSubview(degreesWeatherLabel)
         degreesWeatherLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(weatherDescriptionImageView.snp.top).offset(24)
-            make.left.equalTo(weatherDescriptionImageView.snp.right).offset(8)
-            make.right.equalTo(self).offset(-16)
+            make.top.equalTo(weatherDescriptionImageView.snp.top).offset(Constant.marginLeftAndRightValue)
+            make.left.equalTo(weatherDescriptionImageView.snp.right).offset(Constant.marginLeftAndRightValue)
+            make.right.equalTo(self).offset(-Constant.marginLeftAndRightValue)
         }
     }
     

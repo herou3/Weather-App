@@ -12,10 +12,11 @@ import KRProgressHUD
 
 class WorldMapController: UINavigationController {
     
-    // MARK: - Property
+    // MARK: - Properties
     private let mapView = WorldMapView()
     private let descriptionLocationView = DescriptionLocationView()
     private var locationManager: CLLocationManager = CLLocationManager()
+    private var isFirstStartApp: Bool = true
     private var geocoder: CLGeocoder = CLGeocoder()
     private var pointAnotations: [MKPointAnnotation] = []
     private var placemarks: [CLPlacemark] = [] {
@@ -36,6 +37,16 @@ class WorldMapController: UINavigationController {
     private var networkService = NetworkServiceImpl()
     
     // MARK: - Init
+    override func viewDidAppear(_ animated: Bool) {
+        if !getPermissionAuthorizationStatusUserLocation() &&
+            isFirstStartApp {
+            Alert.showAcessDeniedAlert(on: self,
+                                       with: "Location Accees Requested",
+                                       message: "The location permission was not authorized. Please enable it in Settings")
+            isFirstStartApp = false
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configurateWorldMapController()
@@ -67,17 +78,23 @@ class WorldMapController: UINavigationController {
             make.bottom.equalTo(self.view.snp.bottom)
             make.right.equalTo(self.view.snp.right)
         }
+        mapView.mapTrackingButton.addTarget(self,
+                                            action: #selector(centerMapOnUserButtonClicked),
+                                            for: .touchUpInside)
     }
     
     private func addDescriptionLocationView() {
         self.mapView.addSubview(descriptionLocationView)
         descriptionLocationView.snp.makeConstraints { (make) in
-            make.left.equalTo(mapView).offset(20)
-            make.right.equalTo(mapView).offset(-20)
-            make.bottom.equalTo(mapView).offset(100)
-            make.height.equalTo(100)
+            make.left.equalTo(mapView).offset(Constant.marginLeftAndRightValue)
+            make.right.equalTo(mapView).offset(-Constant.marginLeftAndRightValue)
+            make.bottom.equalTo(mapView).offset(Constant.marginLeftAndRightValue)
+            make.height.equalTo(Constant.briefInformationHightValue)
         }
         descriptionLocationView.isHidden = true
+        descriptionLocationView.detailWeatherButton.addTarget(self,
+                                                              action: #selector(pushDetailViewContorller),
+                                                              for: .touchUpInside)
     }
     
     private func configurateWorldMapController() {
@@ -88,7 +105,7 @@ class WorldMapController: UINavigationController {
     // MARK: - Show and hide DescriptionLocationView
     private func hideDescriptinLocationView() {
         self.descriptionLocationView.snp.updateConstraints { (make) in
-            make.bottom.equalTo(mapView).offset(100)
+            make.bottom.equalTo(mapView).offset(Constant.briefInformationHightValue)
         }
         UIView.animate(withDuration: 0.5) {
             self.mapView.layoutIfNeeded()
@@ -98,15 +115,12 @@ class WorldMapController: UINavigationController {
     
     private func showDescriptinLocationView() {
         self.descriptionLocationView.snp.updateConstraints { (make) in
-            make.bottom.equalTo(mapView).offset(-20)
+            make.bottom.equalTo(mapView).offset(-Constant.marginLeftAndRightValue)
         }
         self.descriptionLocationView.isHidden = false
         UIView.animate(withDuration: 0.5) {
             self.mapView.layoutIfNeeded()
         }
-        descriptionLocationView.detailWeatherButton.addTarget(self,
-                                                              action: #selector(pushDetailViewContorller),
-                                                              for: .touchUpInside)
     }
     
     // MARK: - Add point in Map
@@ -117,16 +131,21 @@ class WorldMapController: UINavigationController {
         pointAnotation.coordinate = coordinate
         pointAnotations.removeAll()
         pointAnotations.append(pointAnotation)
-
+        let region = MKCoordinateRegion(center: pointAnotation.coordinate,
+                                        span: MKCoordinateSpan(latitudeDelta: Constant.latitudeDeltaValue,
+                                                               longitudeDelta: Constant.longitudeDeltaValue))
+        
         mapView.addAnnotations(pointAnotations)
-        mapView.showAnnotations(pointAnotations, animated: true)
+        mapView.setRegion(region, animated: true)
+        
     }
     
     // MARK: - Gestures
     @objc func addPlacemarkAfterTouchToScreen(sender: UITapGestureRecognizer) {
         let location = sender.location(in: mapView)
         let locationCoord = self.mapView.convert(location, toCoordinateFrom: mapView)
-        let locationForPlacemark = CLLocation(latitude: locationCoord.latitude, longitude: locationCoord.longitude)
+        let locationForPlacemark = CLLocation(latitude: locationCoord.latitude,
+                                              longitude: locationCoord.longitude)
         let placemark = MKPlacemark.init(coordinate: locationCoord)
         let annotation = MKPointAnnotation()
         
@@ -143,6 +162,21 @@ class WorldMapController: UINavigationController {
     // MARK: - Internal function
     private func clearMapAnotations() {
         self.mapView.removeAnnotations(mapView.annotations)
+    }
+    
+    func getPermissionAuthorizationStatusUserLocation() -> Bool {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedAlways:
+            return true
+        case .authorizedWhenInUse:
+            return true
+        case .denied:
+            return false
+        case .restricted:
+            return false
+        case .notDetermined:
+            return true
+        }
     }
     
     private func checkInformationAboutPlacemark(location: CLLocation) {
@@ -184,6 +218,17 @@ class WorldMapController: UINavigationController {
         }
     }
     
+    // MARK: - centers camera over user location
+    @objc func centerMapOnUserButtonClicked() {
+        if !getPermissionAuthorizationStatusUserLocation() {
+            Alert.showAcessDeniedAlert(on: self,
+                                       with: "Location Accees Requested",
+                                       message: "The location permission was not authorized. Please enable it in Settings")
+        } else {
+            mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+        }
+    }
+    
     // MARK: - Present WeatherDetailController
     @objc func pushDetailViewContorller() {
         let weatherDetailController = WeatherDetailController(location: self.location)
@@ -201,6 +246,7 @@ extension WorldMapController: CLLocationManagerDelegate {
         switch status {
         case .authorizedWhenInUse:
             KRProgressHUD.show()
+            mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: false)
             locationManager.requestLocation()
         default:
             print("")

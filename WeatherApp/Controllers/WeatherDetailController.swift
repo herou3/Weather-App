@@ -41,16 +41,18 @@ class WeatherDetailController: UIViewController {
         self.view.addSubview(weatherDetailView)
         weatherDetailView.snp.makeConstraints { (make) in
             guard let heightNavBar = self.navigationController?.navigationBar.frame.height else { return }
-            make.top.equalTo(self.view.snp.top).offset(heightNavBar + 16)
+            make.top.equalTo(self.view.snp.top).offset(heightNavBar + Constant.marginLeftAndRightValue)
             make.left.equalTo(self.view.snp.left)
-            make.height.equalTo(132)
+            make.height.equalTo(Constant.briefInformationHightValue)
             make.right.equalTo(self.view.snp.right)
         }
     }
     
     private func addWeatherTableView() {
         weatherTableView = UITableView(frame: CGRect(x: 0,
-                                                     y: heightNavBar + 148,
+                                                     y: heightNavBar +
+                                                        Constant.briefInformationHightValue +
+                                                        Constant.marginLeftAndRightValue,
                                                      width: self.view.frame.width,
                                                      height: self.view.frame.height))
         weatherTableView.dataSource = self
@@ -82,10 +84,11 @@ class WeatherDetailController: UIViewController {
         let urlString: String? = curentLocation?.city?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let city = urlString ?? ""
         if ReachabilityConnect.isConnectedToNetwork() {
-            guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else { return }
+            guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else {
+                return
+            }
             KRProgressHUD.show()
             networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
-                print("Hello")
                 if resposeModel != nil {
                     self.weatherByCity = resposeModel
                     DispatchQueue.main.async {
@@ -98,7 +101,6 @@ class WeatherDetailController: UIViewController {
                                                weatherTemp: self.weatherByCity?.main?.temp)
                         self.weatherTableView.reloadData()
                         KRProgressHUD.dismiss()
-                        print(error ?? "we")
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -108,13 +110,14 @@ class WeatherDetailController: UIViewController {
                         Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
                     }
                 }
-                print("Test")
             }
         } else {
-            Alert.showBasicAlert(on: self, with: "Oops, you have problem", message: "The Internet connection appears to be offline")
+            Alert.showBasicAlert(on: self, with: "Oops, you have problem",
+                                 message: "The Internet connection appears to be offline")
         }
     }
     
+    // MARK: - update information about weather
     private func updateDataWeather(pressureValue: Double?,
                                    humidityValue: Int?,
                                    windValue: Double?,
@@ -132,7 +135,7 @@ class WeatherDetailController: UIViewController {
             weatherDictionary["Wind"] = "\(windValue ?? 0) km/h"
         }
         if quantityOfCloudsValue != nil {
-            weatherDictionary["QuantityOfClouds"] = "\(quantityOfCloudsValue ?? 0)%"
+            weatherDictionary["Clouds"] = "\(quantityOfCloudsValue ?? 0)%"
         }
         if visibilityValue != nil {
             weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) km"
@@ -147,20 +150,6 @@ class WeatherDetailController: UIViewController {
     
     @objc private func cancelWeatherDetailView() {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: - DetectedInternetConnection
-    private func setupRecipeImage(recipeImage: String?) -> CachedImageView {
-        if let recipeImageViewURL = recipeImage {
-            let imageView = CachedImageView()
-            imageView.contentMode = .scaleAspectFit
-            imageView.loadImage(urlString: recipeImageViewURL)
-            return imageView
-        }   else {
-            let imageView = CachedImageView()
-            imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
-            return imageView
-        }
     }
 }
 
