@@ -34,5 +34,4 @@ struct WeatherMainInformation: Codable {
         seaLevel = try values.decodeIfPresent(Double.self, forKey: .seaLevel)
         grndLevel = try values.decodeIfPresent(Double.self, forKey: .grndLevel)
 	}
-
 }

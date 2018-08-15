@@ -34,7 +34,6 @@ class WorldMapController: UINavigationController {
         }
     }
     private var location: Location = Location()
-    private var networkService = NetworkServiceImpl()
     
     // MARK: - Init
     override func viewDidLoad() {

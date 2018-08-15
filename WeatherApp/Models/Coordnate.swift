@@ -19,5 +19,4 @@ struct Coordinate: Codable {
 		longitude = try values.decodeIfPresent(Double.self, forKey: .longitude)
 		latitude = try values.decodeIfPresent(Double.self, forKey: .latitude)
 	}
-
 }

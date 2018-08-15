@@ -31,5 +31,4 @@ struct CityInformation: Codable {
 		sunrise = try values.decodeIfPresent(Int.self, forKey: .sunrise)
 		sunset = try values.decodeIfPresent(Int.self, forKey: .sunset)
 	}
-
 }

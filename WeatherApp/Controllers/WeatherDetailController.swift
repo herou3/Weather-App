@@ -17,7 +17,6 @@ class WeatherDetailController: UIViewController {
     private var weatherDictionary = [String: String]()
     private var weatherByCity: WeatherByCity?
     public var curentLocation: Location?
-    private var networkService = NetworkServiceImpl()
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = curentLocation?.city
@@ -25,7 +24,9 @@ class WeatherDetailController: UIViewController {
         label.textColor = UIColor.white
         return label
     }()
+    private let networRequests: NetworkRequests = NetworkRequests()
     
+    // MARK: - Init / Deinit
     override func viewDidLoad() {
         super.viewDidLoad()
         loadAndRefreshRecipesData()
@@ -33,7 +34,6 @@ class WeatherDetailController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        
         return .lightContent
     }
     
@@ -94,45 +94,39 @@ class WeatherDetailController: UIViewController {
     
     // MARK: - Load serviceData
     private func loadAndRefreshRecipesData() {
-        let urlString: String? = curentLocation?.city?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-        let city = urlString ?? ""
         guard ReachabilityConnect.isConnectedToNetwork() else {
             Alert.showBasicAlert(on: self, with: "Oops, you have problem",
                                  message: "The Internet connection appears to be offline")
             return
         }
-        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else {
-            return
-        }
         KRProgressHUD.show()
-        networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
-            if resposeModel != nil {
-                self.weatherByCity = resposeModel
-                DispatchQueue.main.async {
-                    let weatherBrief: WeatherBrief =
-                        WeatherBrief(pressureValue:
-                            self.weatherByCity?.weatherMainInformation?.pressure,
-                                                                  humidityValue:
-                            self.weatherByCity?.weatherMainInformation?.humidity,
-                                                                  windValue:
-                            self.weatherByCity?.wind?.speed,
-                                                                  quantityOfCloudsValue:
-                            self.weatherByCity?.clouds?.percentOfTheCloud,
-                                                                  visibilityValue:
-                            self.weatherByCity?.visibility)
-                    self.updateDataWeather(weatherBrief: weatherBrief,
-                                           weatherUrl: self.weatherByCity?.weatherBriefInformation?.first?.icon,
-                                           weatherTemp: self.weatherByCity?.weatherMainInformation?.temp)
-                    self.weatherTableView.reloadData()
-                    KRProgressHUD.dismiss()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    let errorMessage = error?.message ?? ""
-                    let errorCode: String = "Error \(error?.code ?? 0)"
-                    KRProgressHUD.dismiss()
-                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
-                }
+        let city = curentLocation?.city ?? ""
+        networRequests.getFeed(from: .city, use: city) { result in
+            switch result {
+            case .success(let movieFeedResult):
+                KRProgressHUD.dismiss()
+                guard let movieResults = movieFeedResult else { return }
+                print(movieResults)
+                self.weatherByCity = movieResults
+                let weatherBrief: WeatherBrief =
+                    WeatherBrief(pressureValue:
+                        self.weatherByCity?.weatherMainInformation?.pressure,
+                                 humidityValue:
+                        self.weatherByCity?.weatherMainInformation?.humidity,
+                                 windValue:
+                        self.weatherByCity?.wind?.speed,
+                                 quantityOfCloudsValue:
+                        self.weatherByCity?.clouds?.percentOfTheCloud,
+                                 visibilityValue:
+                        self.weatherByCity?.visibility)
+                self.updateDataWeather(weatherBrief: weatherBrief,
+                                       weatherUrl: self.weatherByCity?.weatherBriefInformation?.first?.icon,
+                                       weatherTemp: self.weatherByCity?.weatherMainInformation?.temp)
+                self.weatherTableView.reloadData()
+            case .failure(let error):
+                print("the error \(error)")
+                KRProgressHUD.dismiss()
+                Alert.showBasicAlert(on: self, with: "Error", message: error.localizedDescription)
             }
         }
     }
