@@ -16,17 +16,17 @@ class WorldMapController: UINavigationController {
     private let mapView = WorldMapView()
     private let descriptionLocationView = DescriptionLocationView()
     private var locationManager: CLLocationManager = CLLocationManager()
-    private var isFirstStartApp: Bool = true
     private var geocoder: CLGeocoder = CLGeocoder()
     private var pointAnotations: [MKPointAnnotation] = []
+    private var hasAuthorizationStatus: Bool = false
     private var placemarks: [CLPlacemark] = [] {
         didSet {
             addPointInMap()
         }
     }
-    private var isFindedLocality: Bool = false {
+    private var hasFoundLocality: Bool = false {
         didSet {
-            if isFindedLocality {
+            if hasFoundLocality {
                 self.showDescriptinLocationView()
             } else {
                 self.hideDescriptinLocationView()
@@ -37,39 +37,19 @@ class WorldMapController: UINavigationController {
     private var networkService = NetworkServiceImpl()
     
     // MARK: - Init
-    override func viewDidAppear(_ animated: Bool) {
-        if !getPermissionAuthorizationStatusUserLocation() &&
-            isFirstStartApp {
-            Alert.showAcessDeniedAlert(on: self,
-                                       with: "Location Accees Requested",
-                                       message: "The location permission was not authorized. Please enable it in Settings")
-            isFirstStartApp = false
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurateWorldMapController()
-        configurateLocationManager()
-        let configGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector(addPlacemarkAfterTouchToScreen(sender:)))
-        configGesture.numberOfTapsRequired = 1
-        configGesture.numberOfTouchesRequired = 1
-        mapView.addGestureRecognizer(configGesture)
-        mapView.isUserInteractionEnabled = true
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        configureWorldMapController()
+        configureLocationManager()
     }
     
-    // MARK: - Configurate location manager
-    private func configurateLocationManager() {
+    // MARK: - Configure location manager
+    private func configureLocationManager() {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
     }
     
-    // MARK: - Configurate WorldMapController
+    // MARK: - Configure WorldMapController
     private func addWorldMapView() {
         self.view.addSubview(mapView)
         mapView.snp.makeConstraints { (make) in
@@ -81,6 +61,8 @@ class WorldMapController: UINavigationController {
         mapView.mapTrackingButton.addTarget(self,
                                             action: #selector(centerMapOnUserButtonClicked),
                                             for: .touchUpInside)
+        mapView.addGestureRecognizer(configureGesture())
+        mapView.isUserInteractionEnabled = true
     }
     
     private func addDescriptionLocationView() {
@@ -93,11 +75,19 @@ class WorldMapController: UINavigationController {
         }
         descriptionLocationView.isHidden = true
         descriptionLocationView.detailWeatherButton.addTarget(self,
-                                                              action: #selector(pushDetailViewContorller),
+                                                              action: #selector(presentDetailViewContorller),
                                                               for: .touchUpInside)
     }
     
-    private func configurateWorldMapController() {
+    private func configureGesture() -> UITapGestureRecognizer {
+        let configGesture = UITapGestureRecognizer(target: self,
+                                                   action: #selector(addPlacemarkAfterTouchToScreen(sender:)))
+        configGesture.numberOfTapsRequired = 1
+        configGesture.numberOfTouchesRequired = 1
+        return configGesture
+    }
+    
+    private func configureWorldMapController() {
         addWorldMapView()
         addDescriptionLocationView()
     }
@@ -124,7 +114,7 @@ class WorldMapController: UINavigationController {
     }
     
     // MARK: - Add point in Map
-    func addPointInMap() {
+    private func addPointInMap() {
         let pointAnotation = MKPointAnnotation()
         pointAnotation.title = placemarks.first?.name
         guard let coordinate = placemarks.first?.location?.coordinate else { return }
@@ -141,7 +131,7 @@ class WorldMapController: UINavigationController {
     }
     
     // MARK: - Gestures
-    @objc func addPlacemarkAfterTouchToScreen(sender: UITapGestureRecognizer) {
+    @objc private func addPlacemarkAfterTouchToScreen(sender: UITapGestureRecognizer) {
         let location = sender.location(in: mapView)
         let locationCoord = self.mapView.convert(location, toCoordinateFrom: mapView)
         let locationForPlacemark = CLLocation(latitude: locationCoord.latitude,
@@ -164,21 +154,6 @@ class WorldMapController: UINavigationController {
         self.mapView.removeAnnotations(mapView.annotations)
     }
     
-    func getPermissionAuthorizationStatusUserLocation() -> Bool {
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedAlways:
-            return true
-        case .authorizedWhenInUse:
-            return true
-        case .denied:
-            return false
-        case .restricted:
-            return false
-        case .notDetermined:
-            return true
-        }
-    }
-    
     private func checkInformationAboutPlacemark(location: CLLocation) {
         KRProgressHUD.show()
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
@@ -195,7 +170,7 @@ class WorldMapController: UINavigationController {
             if let placemark = placemarks?.first {
             self.placemarks.insert(placemark, at: 0)
             if placemark.locality != nil && placemark.location?.coordinate != nil {
-                self.isFindedLocality = true
+                self.hasFoundLocality = true
                 
                 guard let locality = placemark.locality else { return }
                 guard let latitude = placemark.location?.coordinate.latitude else { return }
@@ -208,10 +183,10 @@ class WorldMapController: UINavigationController {
                 let coordinateString = String(
                     "lat:\(Float(self.location.lat!).cleanValue) long:\(Float(self.location.lon!).cleanValue)"
                 )
-                self.descriptionLocationView.configureDescriptionLocationView(cityName: self.location.city!,
+                self.descriptionLocationView.configureDescriptionLocationView(cityName: locality,
                                                                                pointCoordinate: coordinateString)
             } else {
-                self.isFindedLocality = false
+                self.hasFoundLocality = false
                 }
             }
             KRProgressHUD.dismiss()
@@ -219,8 +194,8 @@ class WorldMapController: UINavigationController {
     }
     
     // MARK: - centers camera over user location
-    @objc func centerMapOnUserButtonClicked() {
-        if !getPermissionAuthorizationStatusUserLocation() {
+    @objc private func centerMapOnUserButtonClicked() {
+        if !self.hasAuthorizationStatus {
             Alert.showAcessDeniedAlert(on: self,
                                        with: "Location Accees Requested",
                                        message: "The location permission was not authorized. Please enable it in Settings")
@@ -230,10 +205,10 @@ class WorldMapController: UINavigationController {
     }
     
     // MARK: - Present WeatherDetailController
-    @objc func pushDetailViewContorller() {
+    @objc private func presentDetailViewContorller() {
         let weatherDetailController = WeatherDetailController(location: self.location)
         weatherDetailController.curentLocation = location
-        let navController = UINavigationController(rootViewController: weatherDetailController)
+        let navController = NavigationController(rootViewController: weatherDetailController)
         self.present(navController, animated: true, completion: nil)
     }
 }
@@ -244,8 +219,19 @@ extension WorldMapController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
+        case .denied:
+            Alert.showAcessDeniedAlert(on: self,
+                                       with: "Location Accees Requested",
+                                       message: "The location permission was not authorized. Please enable it in Settings")
+            self.hasAuthorizationStatus = false
+        case .notDetermined:
+            Alert.showAcessDeniedAlert(on: self,
+                                       with: "Location Accees Requested",
+                                       message: "The location permission was not authorized. Please enable it in Settings")
+            self.hasAuthorizationStatus = false
         case .authorizedWhenInUse:
             KRProgressHUD.show()
+            self.hasAuthorizationStatus = true
             mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: false)
             locationManager.requestLocation()
         default:

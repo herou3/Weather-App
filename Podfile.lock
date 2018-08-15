@@ -2,27 +2,23 @@ PODS:
   - KRActivityIndicatorView (2.1.2)
   - KRProgressHUD (3.2.2):
     - KRActivityIndicatorView (= 2.1.2)
-  - LBTAComponents (0.1.9)
   - SnapKit (4.0.0)
 
 DEPENDENCIES:
   - KRProgressHUD
-  - LBTAComponents (~> 0.1.9)
   - SnapKit (~> 4.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - KRActivityIndicatorView
     - KRProgressHUD
-    - LBTAComponents
     - SnapKit
 
 SPEC CHECKSUMS:
   KRActivityIndicatorView: 27e7a7e3da7fbc8e5405fbc4088b51cc2095a410
   KRProgressHUD: 8872da74b1c462e15c82a8fff250a2d34ee82ea2
-  LBTAComponents: 9a5d314080d1f80208062ccc81a2d25225c5f572
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: b8086870fe0ed79709bafcc7ef1c67253f5bf45f
+PODFILE CHECKSUM: 0eb1450479e8aebff0fe519df009113d1cc45e44
 
 COCOAPODS: 1.5.3

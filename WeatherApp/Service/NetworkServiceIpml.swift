@@ -40,3 +40,7 @@ class NetworkServiceImpl: NetworkService {
             }.resume()
     }
 }
+//
+//extension NetworkServiceImpl {
+//    static func
+//}

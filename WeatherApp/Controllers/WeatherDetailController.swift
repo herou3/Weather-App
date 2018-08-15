@@ -6,7 +6,6 @@
 //  Copyright © 2018 Pavel Kurilov. All rights reserved.
 //
 
-import LBTAComponents
 import SnapKit
 import KRProgressHUD
 
@@ -16,16 +15,26 @@ class WeatherDetailController: UIViewController {
     private let weatherDetailView = WeatherDetailView()
     private var weatherTableView: UITableView = UITableView()
     private var weatherDictionary = [String: String]()
-    private var heightNavBar: CGFloat = 0
     private var weatherByCity: WeatherByCity?
     public var curentLocation: Location?
     private var networkService = NetworkServiceImpl()
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = curentLocation?.city
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textColor = UIColor.white
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadAndRefreshRecipesData()
-        heightNavBar = (self.navigationController?.navigationBar.frame.height)!
-        configurateWeatherDetailController()
+        configureWeatherDetailController()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        
+        return .lightContent
     }
     
     init(location: Location) {
@@ -36,12 +45,11 @@ class WeatherDetailController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - configurate WeatherDetailController
+    // MARK: - Configure WeatherDetailController
     private func addWeatherDetailView() {
         self.view.addSubview(weatherDetailView)
         weatherDetailView.snp.makeConstraints { (make) in
-            guard let heightNavBar = self.navigationController?.navigationBar.frame.height else { return }
-            make.top.equalTo(self.view.snp.top).offset(heightNavBar + Constant.marginLeftAndRightValue)
+            make.top.equalTo(self.topLayoutGuide.snp.bottom).offset(-Constant.marginLeftAndRightValue)
             make.left.equalTo(self.view.snp.left)
             make.height.equalTo(Constant.briefInformationHightValue)
             make.right.equalTo(self.view.snp.right)
@@ -49,22 +57,27 @@ class WeatherDetailController: UIViewController {
     }
     
     private func addWeatherTableView() {
-        weatherTableView = UITableView(frame: CGRect(x: 0,
-                                                     y: heightNavBar +
-                                                        Constant.briefInformationHightValue +
-                                                        Constant.marginLeftAndRightValue,
-                                                     width: self.view.frame.width,
-                                                     height: self.view.frame.height))
+        
+        self.view.addSubview(weatherTableView)
+        weatherTableView.snp.makeConstraints { (make) in
+            make.top.equalTo(self.weatherDetailView.snp.bottom).offset(Constant.marginLeftAndRightValue)
+            make.left.equalTo(self.view.snp.left)
+            make.bottom.equalTo(self.view.snp.bottom)
+            make.right.equalTo(self.view.snp.right)
+        }
         weatherTableView.dataSource = self
         weatherTableView.delegate = self
         weatherTableView.backgroundColor = .mainColor
-        self.view.addSubview(weatherTableView)
+        weatherTableView.tableFooterView = UIView()
+        weatherTableView.separatorStyle = .none
     }
     
-    private func configurateNavigationBar() {
-        navigationController?.navigationBar.barTintColor = UIColor.cardinal
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.barTintColor = .cardinal
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.tintColor = .white
+        let textAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationItem.title = curentLocation?.city
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Close",
                                                             style: .done,
@@ -72,9 +85,9 @@ class WeatherDetailController: UIViewController {
                                                             action: #selector(cancelWeatherDetailView))
     }
     
-    private func configurateWeatherDetailController() {
+    private func configureWeatherDetailController() {
         self.view.backgroundColor = UIColor.mainColor
-        configurateNavigationBar()
+        configureNavigationBar()
         addWeatherDetailView()
         addWeatherTableView()
     }
@@ -83,37 +96,37 @@ class WeatherDetailController: UIViewController {
     private func loadAndRefreshRecipesData() {
         let urlString: String? = curentLocation?.city?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         let city = urlString ?? ""
-        if ReachabilityConnect.isConnectedToNetwork() {
-            guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else {
-                return
-            }
-            KRProgressHUD.show()
-            networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
-                if resposeModel != nil {
-                    self.weatherByCity = resposeModel
-                    DispatchQueue.main.async {
-                        self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
-                                               humidityValue: self.weatherByCity?.main?.humidity,
-                                               windValue: self.weatherByCity?.wind?.speed,
-                                               quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
-                                               visibilityValue: self.weatherByCity?.visibility,
-                                               weatherUrl: self.weatherByCity?.weather?.first?.icon,
-                                               weatherTemp: self.weatherByCity?.main?.temp)
-                        self.weatherTableView.reloadData()
-                        KRProgressHUD.dismiss()
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        let errorMessage = error?.message ?? ""
-                        let errorCode: String = "Error \(error?.code ?? 0)"
-                        KRProgressHUD.dismiss()
-                        Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
-                    }
-                }
-            }
-        } else {
+        guard ReachabilityConnect.isConnectedToNetwork() else {
             Alert.showBasicAlert(on: self, with: "Oops, you have problem",
                                  message: "The Internet connection appears to be offline")
+            return
+        }
+        guard let weatherRequestURL = URL(string:"\(Constant.baseUrl)?APPID=\(NetworkAccess.appId)&q=\(city)") else {
+            return
+        }
+        KRProgressHUD.show()
+        networkService.featchHomeFeed(at: weatherRequestURL) { (resposeModel, error) in
+            if resposeModel != nil {
+                self.weatherByCity = resposeModel
+                DispatchQueue.main.async {
+                    self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
+                                           humidityValue: self.weatherByCity?.main?.humidity,
+                                           windValue: self.weatherByCity?.wind?.speed,
+                                           quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
+                                           visibilityValue: self.weatherByCity?.visibility,
+                                           weatherUrl: self.weatherByCity?.weather?.first?.icon,
+                                           weatherTemp: self.weatherByCity?.main?.temp)
+                    self.weatherTableView.reloadData()
+                    KRProgressHUD.dismiss()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let errorMessage = error?.message ?? ""
+                    let errorCode: String = "Error \(error?.code ?? 0)"
+                    KRProgressHUD.dismiss()
+                    Alert.showBasicAlert(on: self, with: errorCode, message: errorMessage)
+                }
+            }
         }
     }
     
@@ -138,13 +151,13 @@ class WeatherDetailController: UIViewController {
             weatherDictionary["Clouds"] = "\(quantityOfCloudsValue ?? 0)%"
         }
         if visibilityValue != nil {
-            weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) km"
+            weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) m"
         }
         let imageUrl = "http://openweathermap.org/img/w/\(weatherUrl ?? "03d").png"
         guard let fTempDouble = weatherTemp else { return }
         let celsiusTempDouble = fTempDouble - Constant.kelvinTemperatureZero
         let celsiusTempString = "\(String(format: "%.0f", celsiusTempDouble)) °C"
-        weatherDetailView.configurateDataForDescriptionLocationView(weatherImage: imageUrl, weatherDegree: celsiusTempString)
+        weatherDetailView.configureDataForDescriptionLocationView(weatherImage: imageUrl, weatherDegree: celsiusTempString)
         weatherTableView.reloadData()
     }
     
@@ -179,6 +192,7 @@ extension WeatherDetailController: UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.text = Array(weatherDictionary)[indexPath.section].value
         cell.backgroundColor = UIColor.mainColor
+        cell.textLabel?.textColor = UIColor.carmine
         return cell
     }
     
@@ -199,10 +213,11 @@ extension WeatherDetailController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .orange
+        view.backgroundColor = .cardinal
         
         let label = UILabel()
         label.text = Array(weatherDictionary)[section].key
+        label.textColor = .white
         label.frame = CGRect(x: 8, y: 0, width: self.view.frame.width, height: 25)
         view.addSubview(label)
         

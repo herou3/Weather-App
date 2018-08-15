@@ -47,7 +47,7 @@ class DescriptionLocationView: UIView {
         return detailWeatherButton
     }()
     
-    // MARK: - Configurate DescriptionLocationView
+    // MARK: - Configure DescriptionLocationView
     private func addNameCityLabel() {
         addSubview(nameCityLabel)
         nameCityLabel.snp.makeConstraints { (make) in
@@ -84,7 +84,7 @@ class DescriptionLocationView: UIView {
         addCoordinateLabel()
     }
     
-    // MARK: - Configurate data for DescriptionLocationView
+    // MARK: - Configure data for DescriptionLocationView
     func configureDescriptionLocationView(cityName: String,
                                           pointCoordinate: String) {
         nameCityLabel.text = cityName

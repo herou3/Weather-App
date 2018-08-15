@@ -14,14 +14,14 @@ class WorldMapView: MKMapView {
     // MARK: - init WorldMapView
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configurateWorldMapView()
+        configureWorldMapView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - configurate WorldMapView
+    // MARK: - Configure WorldMapView
     let mapTrackingButton: UIButton = {
         let trackImage = #imageLiteral(resourceName: "locate-icon")
         let trackingButton = UIButton(type: UIButtonType.custom)
@@ -35,7 +35,7 @@ class WorldMapView: MKMapView {
         return trackingButton
     }()
     
-    private func configurateWorldMapView() {
+    private func configureWorldMapView() {
         let region = MKCoordinateRegion(center: Constant.coordinatesOfParis,
                                         span: MKCoordinateSpan(latitudeDelta: Constant.latitudeDeltaValue * 2,
                                                                longitudeDelta: Constant.longitudeDeltaValue * 2))

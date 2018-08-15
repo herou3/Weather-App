@@ -8,9 +8,10 @@
 
 import SnapKit
 import KRProgressHUD
-import LBTAComponents
 
 class WeatherDetailView: UIView {
+    
+    var imageCache = NSCache<NSString, UIImage>()
     
     // MARK: - Init WeatherDetailView
     override init(frame: CGRect) {
@@ -23,9 +24,8 @@ class WeatherDetailView: UIView {
     }
     
     // MARK: - Create UI elements
-    private var weatherDescriptionImageView: CachedImageView = {
-        var imageView: CachedImageView = CachedImageView()
-        ///imageView.image = #imageLiteral(resourceName: "defaultWeather-icon")
+    private var weatherDescriptionImageView: ImageLoader = {
+        var imageView: ImageLoader = ImageLoader()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -40,14 +40,14 @@ class WeatherDetailView: UIView {
         return degreesLabel
     }()
 
-    // MARK: - Configurate WeatherDetailView
+    // MARK: - Configure WeatherDetailView
     
     private  func addWeatherDescriptionImageView() {
         addSubview(weatherDescriptionImageView)
         weatherDescriptionImageView.snp.makeConstraints { (make) in
             make.top.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
             make.left.equalTo(self).offset(Constant.marginLeftAndRightValue)
-            make.height.equalTo(100)
+            make.height.equalTo(Constant.briefInformationHightValue)
             make.width.equalTo(100)
         }
     }
@@ -55,7 +55,8 @@ class WeatherDetailView: UIView {
     private func addDegreesWeatherLabel() {
         addSubview(degreesWeatherLabel)
         degreesWeatherLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(weatherDescriptionImageView.snp.top).offset(Constant.marginLeftAndRightValue)
+            make.top.equalTo(weatherDescriptionImageView.snp.top).offset(Constant.briefInformationHightValue/2 -
+                                                                         degreesWeatherLabel.font.pointSize/2)
             make.left.equalTo(weatherDescriptionImageView.snp.right).offset(Constant.marginLeftAndRightValue)
             make.right.equalTo(self).offset(-Constant.marginLeftAndRightValue)
         }
@@ -68,9 +69,9 @@ class WeatherDetailView: UIView {
     }
 }
 
-// MARK: - Configurate data for DescriptionLocationView
+// MARK: - Configure data for DescriptionLocationView
 extension WeatherDetailView {
-    func configurateDataForDescriptionLocationView(weatherImage: String,
+    func configureDataForDescriptionLocationView(weatherImage: String,
                                                    weatherDegree: String?) {
         if weatherDegree != "" ||
             weatherDegree != nil {
@@ -79,7 +80,8 @@ extension WeatherDetailView {
             degreesWeatherLabel.text = "-"
         }
         if weatherImage != nil {
-            weatherDescriptionImageView.loadImage(urlString: weatherImage)
+            let imageUrl = URL(string: weatherImage) ?? URL(fileURLWithPath: "defaultWeather-icon")
+            weatherDescriptionImageView.loadImageWithUrl(imageUrl)
         }
     }
 }

@@ -30,6 +30,8 @@
 		AB4ABE06211BABD6003E4302 /* WeatherByCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE05211BABD6003E4302 /* WeatherByCity.swift */; };
 		AB4ABE08211BC989003E4302 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE07211BC989003E4302 /* ErrorResponse.swift */; };
 		AB4ABE17211C312C003E4302 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4ABE16211C312C003E4302 /* Location.swift */; };
+		AB7689592122A5380015FEB3 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7689582122A5380015FEB3 /* ImageLoader.swift */; };
+		AB76895D2122CE760015FEB3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB76895C2122CE760015FEB3 /* NavigationController.swift */; };
 		ABF704B4211D18170081BC81 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B3211D18170081BC81 /* NetworkService.swift */; };
 		ABF704B6211D31270081BC81 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B5211D31270081BC81 /* Alert.swift */; };
 		ABF704B8211D414B0081BC81 /* ReachabilityConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF704B7211D414B0081BC81 /* ReachabilityConnect.swift */; };
@@ -64,6 +66,8 @@
 		AB4ABE05211BABD6003E4302 /* WeatherByCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherByCity.swift; sourceTree = "<group>"; };
 		AB4ABE07211BC989003E4302 /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		AB4ABE16211C312C003E4302 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		AB7689582122A5380015FEB3 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		AB76895C2122CE760015FEB3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		ABF704B3211D18170081BC81 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		ABF704B5211D31270081BC81 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		ABF704B7211D414B0081BC81 /* ReachabilityConnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityConnect.swift; sourceTree = "<group>"; };
@@ -113,6 +117,7 @@
 		AB091B322110AA7E007C1782 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				AB76895E2122D13E0015FEB3 /* Base */,
 				AB4ABDEC21123026003E4302 /* Service */,
 				AB091B492110AAC7007C1782 /* Helpers */,
 				AB091B482110AAB1007C1782 /* Extensions */,
@@ -175,8 +180,8 @@
 			isa = PBXGroup;
 			children = (
 				AB4ABDEA21123008003E4302 /* Constants.swift */,
-				ABF704B5211D31270081BC81 /* Alert.swift */,
 				ABF704B7211D414B0081BC81 /* ReachabilityConnect.swift */,
+				AB7689582122A5380015FEB3 /* ImageLoader.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -198,6 +203,15 @@
 				ABF704B3211D18170081BC81 /* NetworkService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		AB76895E2122D13E0015FEB3 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				AB76895C2122CE760015FEB3 /* NavigationController.swift */,
+				ABF704B5211D31270081BC81 /* Alert.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,14 +292,12 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-WeatherApp/Pods-WeatherApp-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/KRActivityIndicatorView/KRActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/KRProgressHUD/KRProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/LBTAComponents/LBTAComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KRProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBTAComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +350,7 @@
 				AB091B362110AA7E007C1782 /* WorldMapController.swift in Sources */,
 				AB4ABE02211B2046003E4302 /* NetworkServiceIpml.swift in Sources */,
 				AB4ABDF4211B0FC3003E4302 /* Weather.swift in Sources */,
+				AB76895D2122CE760015FEB3 /* NavigationController.swift in Sources */,
 				AB4ABDE121122F11003E4302 /* DescriptionLocationView.swift in Sources */,
 				ABF704B6211D31270081BC81 /* Alert.swift in Sources */,
 				AB4ABDFC211B1441003E4302 /* Sys.swift in Sources */,
@@ -345,6 +358,7 @@
 				AB4ABE17211C312C003E4302 /* Location.swift in Sources */,
 				ABF704BA211D83C00081BC81 /* NetworkAccess.swift in Sources */,
 				AB4ABDF6211B1154003E4302 /* Main.swift in Sources */,
+				AB7689592122A5380015FEB3 /* ImageLoader.swift in Sources */,
 				AB4ABDEB21123008003E4302 /* Constants.swift in Sources */,
 				AB4ABDE921122FCD003E4302 /* UIColor+AppColor.swift in Sources */,
 				AB091B342110AA7E007C1782 /* AppDelegate.swift in Sources */,
