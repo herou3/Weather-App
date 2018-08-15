@@ -4,20 +4,20 @@
 
 import Foundation
 
-struct Coord: Codable {
-	let lon: Double?
-	let lat: Double?
+struct Coordinate: Codable {
+	let longitude: Double?
+	let latitude: Double?
 
 	enum CodingKeys: String, CodingKey {
 
-		case lon
-		case lat
+		case longitude = "lon"
+		case latitude = "lat"
 	}
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		lon = try values.decodeIfPresent(Double.self, forKey: .lon)
-		lat = try values.decodeIfPresent(Double.self, forKey: .lat)
+		longitude = try values.decodeIfPresent(Double.self, forKey: .longitude)
+		latitude = try values.decodeIfPresent(Double.self, forKey: .latitude)
 	}
 
 }

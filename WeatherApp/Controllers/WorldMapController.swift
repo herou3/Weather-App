@@ -181,7 +181,7 @@ class WorldMapController: UINavigationController {
                 self.location.lon = CGFloat(longitude)
                 
                 let coordinateString = String(
-                    "lat:\(Float(self.location.lat!).cleanValue) long:\(Float(self.location.lon!).cleanValue)"
+                    "latitude:\(Float(self.location.lat!).cleanValue) long:\(Float(self.location.lon!).cleanValue)"
                 )
                 self.descriptionLocationView.configureDescriptionLocationView(cityName: locality,
                                                                                pointCoordinate: coordinateString)

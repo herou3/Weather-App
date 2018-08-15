@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct Sys: Codable {
+struct CityInformation: Codable {
 	let type: Int?
 	let identifier: Int?
 	let message: Double?

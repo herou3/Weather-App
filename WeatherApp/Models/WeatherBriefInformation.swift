@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct Weather: Codable {
+struct WeatherBriefInformation: Codable {
 	let id: Int?
 	let main: String?
 	let description: String?

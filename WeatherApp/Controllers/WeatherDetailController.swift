@@ -109,13 +109,20 @@ class WeatherDetailController: UIViewController {
             if resposeModel != nil {
                 self.weatherByCity = resposeModel
                 DispatchQueue.main.async {
-                    self.updateDataWeather(pressureValue: self.weatherByCity?.main?.pressure,
-                                           humidityValue: self.weatherByCity?.main?.humidity,
-                                           windValue: self.weatherByCity?.wind?.speed,
-                                           quantityOfCloudsValue: self.weatherByCity?.clouds?.all,
-                                           visibilityValue: self.weatherByCity?.visibility,
-                                           weatherUrl: self.weatherByCity?.weather?.first?.icon,
-                                           weatherTemp: self.weatherByCity?.main?.temp)
+                    let weatherBrief: WeatherBrief =
+                        WeatherBrief(pressureValue:
+                            self.weatherByCity?.weatherMainInformation?.pressure,
+                                                                  humidityValue:
+                            self.weatherByCity?.weatherMainInformation?.humidity,
+                                                                  windValue:
+                            self.weatherByCity?.wind?.speed,
+                                                                  quantityOfCloudsValue:
+                            self.weatherByCity?.clouds?.percentOfTheCloud,
+                                                                  visibilityValue:
+                            self.weatherByCity?.visibility)
+                    self.updateDataWeather(weatherBrief: weatherBrief,
+                                           weatherUrl: self.weatherByCity?.weatherBriefInformation?.first?.icon,
+                                           weatherTemp: self.weatherByCity?.weatherMainInformation?.temp)
                     self.weatherTableView.reloadData()
                     KRProgressHUD.dismiss()
                 }
@@ -131,27 +138,23 @@ class WeatherDetailController: UIViewController {
     }
     
     // MARK: - update information about weather
-    private func updateDataWeather(pressureValue: Double?,
-                                   humidityValue: Int?,
-                                   windValue: Double?,
-                                   quantityOfCloudsValue: Int?,
-                                   visibilityValue: Int?,
+    private func updateDataWeather(weatherBrief: WeatherBrief,
                                    weatherUrl: String?,
                                    weatherTemp: Double?) {
-        if pressureValue != nil {
-            weatherDictionary["Pressure"] = "\(pressureValue ?? 0) mb"
+        if weatherBrief.pressureValue != nil {
+            weatherDictionary["Pressure"] = "\(weatherBrief.pressureValue ?? 0) mb"
         }
-        if humidityValue != nil {
-            weatherDictionary["Humidity"] = "\(humidityValue ?? 0)%"
+        if weatherBrief.humidityValue != nil {
+            weatherDictionary["Humidity"] = "\(weatherBrief.humidityValue ?? 0)%"
         }
-        if windValue != nil {
-            weatherDictionary["Wind"] = "\(windValue ?? 0) km/h"
+        if weatherBrief.windValue != nil {
+            weatherDictionary["Wind"] = "\(weatherBrief.windValue ?? 0) km/h"
         }
-        if quantityOfCloudsValue != nil {
-            weatherDictionary["Clouds"] = "\(quantityOfCloudsValue ?? 0)%"
+        if weatherBrief.quantityOfCloudsValue != nil {
+            weatherDictionary["Clouds"] = "\(weatherBrief.quantityOfCloudsValue ?? 0)%"
         }
-        if visibilityValue != nil {
-            weatherDictionary["Visibility"] = "\(visibilityValue ?? 0) m"
+        if weatherBrief.visibilityValue != nil {
+            weatherDictionary["Visibility"] = "\(weatherBrief.visibilityValue ?? 0) m"
         }
         let imageUrl = "http://openweathermap.org/img/w/\(weatherUrl ?? "03d").png"
         guard let fTempDouble = weatherTemp else { return }

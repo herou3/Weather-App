@@ -4,7 +4,7 @@
 
 import Foundation
 
-struct Main: Codable {
+struct WeatherMainInformation: Codable {
 	let temp: Double?
 	let pressure: Double?
 	let humidity: Int?
@@ -15,9 +15,9 @@ struct Main: Codable {
 
 	enum CodingKeys: String, CodingKey {
 
-		case temp = "temp"
-		case pressure = "pressure"
-		case humidity = "humidity"
+		case temp
+		case pressure
+		case humidity
 		case tempMin = "temp_min"
 		case tempMax = "temp_max"
         case seaLevel = "sea_Level"
